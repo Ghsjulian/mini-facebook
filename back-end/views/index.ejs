@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Client</title>
+</head>
+<body>
+    <h1>Socket.IO Client</h1>
+    <div>
+        <input id="messageInput" type="text" placeholder="Type a message..." />
+        <button id="sendMessageButton">Send Message</button>
+    </div>
+    <div id="messages"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Connect to the server
+        const socket = io(); // Automatically connects to the same origin
+        // Listen for messages from the server
+        socket.on('__init__', (id) => {
+            socket.emit("createConnection",{
+                user_id :id,
+                user_name:"Ghs Julian"
+            })
+        });
+       // socket.emit("")
+    </script>
+</body>
+</html>
