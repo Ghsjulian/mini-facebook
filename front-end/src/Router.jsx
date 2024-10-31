@@ -12,17 +12,13 @@ const MyRoutes = [
     {
         path: "/",
         element: (
-            <Protect>
                 <Layouts />
-            </Protect>
         ),
         children: [
             {
                 index: true,
                 element: (
-                    <Protect>
                         <Home />
-                    </Protect>
                 )
             },
             {
@@ -38,11 +34,11 @@ const MyRoutes = [
 
     {
         path: "/login",
-        element: <Protect><Login /></Protect>
+        element:<Login />
     },
     {
         path: "/signup",
-        element: <Protect><Signup /></Protect>
+        element: <Signup />
     },
 
     {

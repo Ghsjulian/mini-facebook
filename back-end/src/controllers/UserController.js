@@ -1,6 +1,8 @@
 // Import Files Here
+const dotenv = require("dotenv").config("../../.env");
 const UserModel = require("../models/UserModel");
 const functions = require("../functions/");
+const api = process.env.API;
 
 class UserController {
     async UserSignup(req, res) {
@@ -99,7 +101,7 @@ class UserController {
                         name,
                         email,
                         password: hashPassword,
-                        avtar: "",
+                        avtar: api + "/users/default-user.png",
                         connections: [],
                         token: jwt,
                         type: "USER"
@@ -274,9 +276,11 @@ class UserController {
         const data = JSON.parse(req.body.data);
         var avtar = null;
         if (data.avtar === "YES") {
-            data.avtar = req.file.filename;
-        } else {
-            data.avtar = null;
+            data.avtar = api + "/users/" + req.file.filename;
+        } 
+        if(data.password && data.password !== null){
+            const hashPassword = await functions.makeHash(data.password);
+            data.password = hashPassword                  
         }
         try {
             const update = await UserModel.findByIdAndUpdate(
@@ -334,7 +338,7 @@ class UserController {
         }
     }
     async GetSingleUser(req, res) {
-        const id = req.params.userID
+        const id = req.params.userID;
         try {
             if (id) {
                 const user = await UserModel.finOne({ _id: id });
@@ -344,7 +348,7 @@ class UserController {
                         status: true,
                         error: false,
                         success: true,
-                        user ,
+                        user,
                         message: "User Found Successfully"
                     });
                 } else {
@@ -365,19 +369,19 @@ class UserController {
     }
     async GetAllUser(req, res) {
         try {
-                const users = await UserModel.find();
-                if (users) {
-                    return res.status(200).json({
-                        code: 200,
-                        status: true,
-                        error: false,
-                        success: true,
-                        peoples:users ,
-                        message: "User Found Successfully"
-                    });
-                } else {
-                    throw new Error("Something Went Wrong");
-                }
+            const users = await UserModel.find();
+            if (users) {
+                return res.status(200).json({
+                    code: 200,
+                    status: true,
+                    error: false,
+                    success: true,
+                    peoples: users,
+                    message: "User Found Successfully"
+                });
+            } else {
+                throw new Error("Something Went Wrong");
+            }
         } catch (error) {
             return res.status(403).json({
                 code: 403,
