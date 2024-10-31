@@ -180,6 +180,20 @@
     border-radius: 50%;
     margin: 0.2rem auto;
 }
+.edit-form .error {
+    color: var(--error);
+    padding: 0.5rem 1rem;
+    border: 0.1px solid var(--error);
+    background: var(--error-bg);
+    border-radius: 5px;
+}
+.edit-form .success {
+    color: var(--success);
+    padding: 0.5rem 1rem;
+    border: 0.1px solid var(--success);
+    background: var(--suceess-bg);
+    border-radius: 5px;
+}
 .edit-form input {
     outline: none;
     border: 2px solid var(--logo);

@@ -68,11 +68,8 @@ const Login = () => {
             const response = await request.json();
             console.log(response);
             if (response.success) {
-                setCookie("mini-token", response.token);
-                setCookie("mini-id", response.userID);
-                setCookie("mini-user", response.userType);
-                setCookie("mini-date", response.date);
-                txtRef.current.textContent = "Login Success";
+                setCookie("mini-facebook", JSON.stringify(response.user));
+                 txtRef.current.textContent = "Login Success";
                 showMessage(response.message, true);
                 loader.current.classList.remove("load");
             } else {

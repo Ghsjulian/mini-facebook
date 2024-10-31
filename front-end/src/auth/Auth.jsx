@@ -23,14 +23,17 @@ export const AuthProvider = ({ children }) => {
         }
     };
     const isAuthenticated = () => {
-        var data = {
-            token: getCookie("mini-token") || null,
-            id: getCookie("mini-id") || null,
-            type: getCookie("mini-user") || null,
-            date: getCookie("mini-date") || null
-        };
-        if (data.token !== null && data.id !== null) {
-            return data;
+        var isUser = getCookie("mini-facebook") || null;
+        if (isUser && isUser !== null) {
+            return true 
+        } else {
+            return null;
+        }
+    };
+    const getUser = () => {
+        var isUser = getCookie("mini-facebook") || null;
+        if (isUser && isUser !== null) {
+            return JSON.parse(isUser);
         } else {
             return null;
         }
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ isLogin, isLoggedIn, isAuthenticated, login, logout }}
+            value={{ isLogin, isLoggedIn,getUser, isAuthenticated, login, logout }}
         >
             {children}
         </AuthContext.Provider>

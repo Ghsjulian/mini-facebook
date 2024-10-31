@@ -119,12 +119,19 @@ class UserController {
                                 { token: jwt }
                             );
                             if (update) {
+                                const user = {
+                                    id: currentUser._id,
+                                    name: currentUser.name,
+                                    email: currentUser.email,
+                                    avtar: currentUser.avtar,
+                                    user_type: currentUser.type,
+                                    connection: currentUser.connection,
+                                    token: currentUser.token,
+                                    date: today
+                                };
                                 return res.status(200).json({
                                     code: 200,
-                                    userID: id,
-                                    userType: u_type,
-                                    token: jwt,
-                                    date: today,
+                                    user,
                                     status: true,
                                     error: false,
                                     success: true,
@@ -238,12 +245,19 @@ class UserController {
                                 { token: token }
                             );
                             if (update) {
+                                const user = {
+                                    id: isExist._id,
+                                    name: isExist.name,
+                                    email: isExist.email,
+                                    avtar: isExist.avtar,
+                                    user_type: isExist.type,
+                                    connection: isExist.connection,
+                                    token: isExist.token,
+                                    date: today
+                                };
                                 return res.status(200).json({
                                     code: 200,
-                                    userID: id,
-                                    userType: u_type,
-                                    token,
-                                    date: today,
+                                    user,
                                     status: true,
                                     error: false,
                                     success: true,
@@ -277,10 +291,10 @@ class UserController {
         var avtar = null;
         if (data.avtar === "YES") {
             data.avtar = api + "/users/" + req.file.filename;
-        } 
-        if(data.password && data.password !== null){
+        }
+        if (data.password && data.password !== null) {
             const hashPassword = await functions.makeHash(data.password);
-            data.password = hashPassword                  
+            data.password = hashPassword;
         }
         try {
             const update = await UserModel.findByIdAndUpdate(
@@ -288,11 +302,27 @@ class UserController {
                 data
             );
             if (update) {
+                const isExist = await UserModel.findOne(
+                     {_id:req.params.userID}
+                );
+                var date = new Date();
+                            const today = date.toDateString();
+                const user = {
+                    id: isExist._id,
+                    name: isExist.name,
+                    email: isExist.email,
+                    avtar: isExist.avtar,
+                    user_type: isExist.type,
+                    connection: isExist.connection,
+                    token: isExist.token,
+                    date: today
+                };
                 return res.status(200).json({
                     code: 200,
                     status: true,
                     error: false,
                     success: true,
+                    user,
                     message: "Profile Updated Successfully"
                 });
             } else {

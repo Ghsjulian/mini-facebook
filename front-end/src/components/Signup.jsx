@@ -72,9 +72,11 @@ const Login = () => {
             const response = await request.json();
             console.log(response);
             if (response.success) {
+                setCookie("mini-facebook", JSON.stringify(response.user));
                 txtRef.current.textContent = "Signup Success";
                 showMessage(response.message, true);
                 loader.current.classList.remove("load");
+                navigate("/")
             } else {
                 txtRef.current.textContent = "Signup Now";
                 showMessage(response.message, false);
