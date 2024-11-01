@@ -17,9 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(cors({ origin: "*" }));
 
+ socketManager.init(server);
 // Static Routes Here
 app.get("/", (req, res) => {
-    // socketManager.init(server);
     res.render("index");
 });
 app.get("/login", (req, res) => {

@@ -128,13 +128,16 @@ const Profile = () => {
                             </div>
                             <h3>Edit Profile</h3>
                             <label htmlFor="avtar">
-                                <img
-                                    src={
-                                        fileData
-                                            ? fileData
-                                            : "images/upload-img.png"
-                                    }
-                                />
+                                {!fileData &&<i className="bi bi-camera"></i>}
+                                {fileData && (
+                                    <img
+                                        src={
+                                            fileData
+                                                ? fileData
+                                                : "images/gallery.png"
+                                        }
+                                    />
+                                )}
                             </label>
                             <span ref={mesgRef}></span>
                             <input

@@ -28,14 +28,14 @@ const Header = () => {
                     <NavLink to="/profile">
                         <i className="bi bi-person"></i>
                     </NavLink>
-                    <NavLink to="/add-friend">
-                        <i className="bi bi-person-plus"></i>
+                    <NavLink to="/add-friends">
+                        <i className="bi bi-people"></i>
                     </NavLink>
                     <NavLink to="/chat">
                         <i className="bi bi-chat"></i>
                     </NavLink>
                     <NavLink to="/">
-                        <i className="ri ri-logout-circle-r-line"></i>
+                        <i className="bi bi-box-arrow-right"></i>
                     </NavLink>
                 </div>
                 <div className="action">

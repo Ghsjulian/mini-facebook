@@ -10,24 +10,19 @@ export const AuthProvider = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false); // Initially set to false or true based on your logic
 
     const isLoggedIn = () => {
-        var data = {
-            token: getCookie("mini-token") || null,
-            id: getCookie("mini-id") || null,
-            type: getCookie("mini-user") || null,
-            date: getCookie("mini-date") || null
-        };
-        if (data.token !== null && data.id !== null) {
-            return data;
+        var isUser = getCookie("mini-facebook") || null;
+        if (isUser && isUser !== null) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     };
     const isAuthenticated = () => {
         var isUser = getCookie("mini-facebook") || null;
         if (isUser && isUser !== null) {
-            return true 
+            return true;
         } else {
-            return null;
+            return false;
         }
     };
     const getUser = () => {
@@ -38,18 +33,19 @@ export const AuthProvider = ({ children }) => {
             return null;
         }
     };
-
-    const login = () => {
-        setIsLogin(true); // Call this function when user logs in
-    };
-
     const logout = () => {
         setIsLogin(false); // Call this function when user logs out
     };
 
     return (
         <AuthContext.Provider
-            value={{ isLogin, isLoggedIn,getUser, isAuthenticated, login, logout }}
+            value={{
+                isLogin,
+                isLoggedIn,
+                getUser,
+                isAuthenticated,
+                logout
+            }}
         >
             {children}
         </AuthContext.Provider>
@@ -66,6 +62,10 @@ export const Protect = ({ children }) => {
         return <Navigate to="/login" />;
     }
     return isAuthenticated() ? children : <Navigate to="/login" />;
+};
+export const LoginProtect = ({ children }) => {
+    const { isAuthenticated } = useAuth();
+    return !isAuthenticated() ? children : <Navigate to="/" />;
 };
 
 /*

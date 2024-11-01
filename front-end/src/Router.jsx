@@ -1,25 +1,25 @@
 /* Importing All Routes And Components Here...*/
 import Layouts from "./layouts/Layouts";
-import { Protect } from "./auth/Auth";
+import { Protect,LoginProtect } from "./auth/Auth";
 import NotFound from "./components/404";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Profile from "./components/Profile";
-import AddFriends from "./components/AddFriends"
+import AddFriends from "./components/AddFriends";
 
 const MyRoutes = [
     {
         path: "/",
         element: (
+            <Protect>
                 <Layouts />
+            </Protect>
         ),
         children: [
             {
                 index: true,
-                element: (
-                        <Home />
-                )
+                element: <Home />
             },
             {
                 path: "/profile",
@@ -34,11 +34,11 @@ const MyRoutes = [
 
     {
         path: "/login",
-        element:<Login />
+        element: <LoginProtect><Login /></LoginProtect>
     },
     {
         path: "/signup",
-        element: <Signup />
+        element: <LoginProtect><Signup /></LoginProtect>
     },
 
     {

@@ -302,11 +302,11 @@ class UserController {
                 data
             );
             if (update) {
-                const isExist = await UserModel.findOne(
-                     {_id:req.params.userID}
-                );
+                const isExist = await UserModel.findOne({
+                    _id: req.params.userID
+                });
                 var date = new Date();
-                            const today = date.toDateString();
+                const today = date.toDateString();
                 const user = {
                     id: isExist._id,
                     name: isExist.name,
@@ -398,15 +398,24 @@ class UserController {
         }
     }
     async GetAllUser(req, res) {
+        var peoples = [];
         try {
             const users = await UserModel.find();
             if (users) {
+                users.forEach(user => {
+                    peoples.push({
+                        id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        avtar: user.avtar
+                    });
+                });
                 return res.status(200).json({
                     code: 200,
                     status: true,
                     error: false,
                     success: true,
-                    peoples: users,
+                    peoples,
                     message: "User Found Successfully"
                 });
             } else {
