@@ -1,6 +1,7 @@
 // Import Files Here
 const dotenv = require("dotenv").config("../../.env");
 const UserModel = require("../models/UserModel");
+const NotificationModel = require("../models/NotificationModel");
 const functions = require("../functions/");
 const api = process.env.API;
 
@@ -399,8 +400,26 @@ class UserController {
     }
     async GetAllUser(req, res) {
         var peoples = [];
+        var requested = [];
+        let id = req.params.userID;
         try {
-            const users = await UserModel.find();
+            // If Requested
+            const request = await NotificationModel.find({ sender_id: id });
+            const users = await UserModel.find({ _id: { $ne: id } }).select(
+                -"password"
+            );
+
+            if (request.length > 0) {
+                request.forEach(reqUser => {
+                    if (
+                        reqUser.sender_id === id ||
+                        reqUser.to.id.toString() === id
+                    ) {
+                        requested.push(reqUser);
+                    }
+                });
+            }
+
             if (users) {
                 users.forEach(user => {
                     peoples.push({
@@ -410,6 +429,7 @@ class UserController {
                         avtar: user.avtar
                     });
                 });
+
                 return res.status(200).json({
                     code: 200,
                     status: true,
@@ -430,6 +450,11 @@ class UserController {
                 message: error.message
             });
         }
+    }
+    async UserLogout(req, res) {
+        console.log("Logout...");
+        console.log(req.headers.user);
+        res.json({ msg: "okkk" });
     }
 }
 

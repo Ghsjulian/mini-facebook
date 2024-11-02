@@ -12,6 +12,9 @@ const socket = io("http://localhost:3000", {
 export const SocketProvider = ({ children }) => {
     const { getUser } = useAuth();
     useEffect(() => {
+        socket.on("get-new-user",(users)=>{
+            console.log(users);
+        })
         // Listen for connection errors
         socket.on("connect_error", err => {
             console.error(`Connection error: ${err.message}`);
@@ -30,8 +33,8 @@ export const SocketProvider = ({ children }) => {
     }, []);
 
     // Function to create a connection for a user
-    const createConnection = userId => {
-        socket.emit("createConnection", { user_id: userId });
+    const connectUserToServer = userId => {
+        socket.emit("new-user", userId);
     };
 
     const addFriend = async (id, target) => {
@@ -47,7 +50,7 @@ export const SocketProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ createConnection, addFriend }}>
+        <AuthContext.Provider value={{ connectUserToServer, addFriend }}>
             {children}
         </AuthContext.Provider>
     );

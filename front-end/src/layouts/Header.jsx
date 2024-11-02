@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { useAuth } from "../auth/Auth";
 
 const Header = () => {
+    const { logout } = useAuth();
     const sideRef = useRef(null);
     const settingRef = useRef(null);
     const [isOpen, setisOpen] = useState(false);
@@ -34,7 +36,7 @@ const Header = () => {
                     <NavLink to="/chat">
                         <i className="bi bi-chat"></i>
                     </NavLink>
-                    <NavLink to="/">
+                    <NavLink onClick={logout} to="#">
                         <i className="bi bi-box-arrow-right"></i>
                     </NavLink>
                 </div>

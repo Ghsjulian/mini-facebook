@@ -6,16 +6,15 @@ import { useSocket } from "../auth/SocketProvider";
 const AddFriends = () => {
     const [peoples, setPeople] = useState([]);
     const { addFriend } = useSocket();
+    const { getUser } = useAuth();
     const fetchPeoples = async () => {
         const api = import.meta.env.VITE_API_URL;
         try {
-            const request = await fetch(`${api}/all-users`);
+            const request = await fetch(`${api}/all-users/${getUser().id}`);
             const response = await request.json();
             if (response.success) {
-                console.log(response);
                 setPeople(response.peoples);
             }
-            // alert(JSON.stringify(response));
         } catch (error) {
             console.log(error);
         }

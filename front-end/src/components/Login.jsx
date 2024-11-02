@@ -3,9 +3,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/css/index.css";
 import { setCookie } from "../auth/Cookies";
 import { useAuth } from "../auth/Auth";
+import { useSocket } from "../auth/SocketProvider";
 
 const Login = () => {
     const { isAuthenticated } = useAuth();
+    const { connectUserToServer } = useSocket();
     useEffect(() => {
         if (isAuthenticated()) {
             navigate("/");
@@ -68,6 +70,7 @@ const Login = () => {
             const response = await request.json();
             console.log(response);
             if (response.success) {
+                connectUserToServer(response.user.id)
                 setCookie("mini-facebook", JSON.stringify(response.user));
                  txtRef.current.textContent = "Login Success";
                 showMessage(response.message, true);

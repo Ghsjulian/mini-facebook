@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const NotificationSchema = new mongoose.Schema({
     from: Object,
     to: Object,
+    sender_id : String,
+    reciver_id : String,
     sender_name: String,
     sender_email: String,
     sender_avtar: String,

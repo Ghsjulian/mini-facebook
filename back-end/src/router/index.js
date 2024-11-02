@@ -7,8 +7,9 @@ const uploadFolder = "./public/users/";
 const upload = multerConfig(uploadFolder);
 
 // Application Users Routes Here
-router.post("/login", UserController.UserLogin);
 router.post("/signup", UserController.UserSignup);
+router.post("/login", UserController.UserLogin);
+router.get("/logout", UserController.UserLogout);
 
 router.put(
     "/edit-user/:userID",
@@ -18,7 +19,7 @@ router.put(
 
 router.delete("/delete-user/:userID", UserController.DeleteUser);
 router.get("/get-user/:userID", UserController.GetSingleUser);
-router.get("/all-users", UserController.GetAllUser);
+router.get("/all-users/:userID", UserController.GetAllUser);
 /*
 // Application Post Content Routes Here
 router.post("/create-post", PostController.CreatePost);

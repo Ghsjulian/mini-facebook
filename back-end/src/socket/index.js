@@ -20,17 +20,33 @@ class MyServer {
             return error;
         }
     }
+    async pushRequest(sender, name, email, avtar, target) {
+        try {
+            const targetUser = await UserModel.findOne({ _id: target });
+            var connections = targetUser.connections;
+            connections.push({
+                status: "REQUEST",
+                sender,
+                reciver: target,
+                name,
+                email,
+                avtar
+            });
+            const update = await UserModel.findOneAndUpdate(
+                { _id: target },
+                { connections }
+            );
+            if (update) {
+                return true;
+            }
+        } catch (error) {
+            console.log(error);
+            return error.message;
+        }
+    }
     async sendNotification(user) {
         try {
-            const newMessage = new NotificationModel({
-                from: user.from,
-                to: user.to,
-                sender_name: user.name,
-                sender_email: user.email,
-                sender_avtar: user.avtar,
-                message: user.message,
-                date: user.date
-            });
+            const newMessage = new NotificationModel(user);
             const send = await newMessage.save();
             if (send) {
                 return true;
@@ -41,23 +57,41 @@ class MyServer {
             return error.message;
         }
     }
-
+    async getNotification(id) {
+        try {
+            const message = UserModel.findOne({ id });
+        } catch (error) {
+            console.log(error);
+        }
+    }
     async init(server) {
         this.io.attach(server);
         this.io.on("connection", socket => {
-            console.log("connected....");
             socket.emit("__init__", socket.id);
-            socket.on("createConnection", user => {
-                this.users[user.user_id] = user;
-                console.log(`\n [+] New User Connected -> ${user.user_id}\n`);
-                console.log(this.users);
+            socket.on("new-user", userID => {
+                console.log(`\n [+] New User Connected -> ${userID}\n`);
+                this.users[userID] = this.getUser(userID);
+                this.io.emit("get-new-user", this.users[userID]);
             });
+
+            /*-----------------------------*
+            +++----------------------------*
+            +++----------------------------*
+            +++------TESTING THE-----------*
+            +++------SOCKET SERVER --------*
+            +++------FOR CONNECTION--------*
+            +++----------------------------*
+            +++----------------------------*
+            +++----------------------------*
+            +++----------------------------*
+            +++----------------------------*
+            +++----------------------------*/
             socket.on("add-friend", (from, to) => {
                 this.getUser(from).then(fromUser => {
                     this.getUser(to).then(toUser => {
                         var date = new Date();
                         const today = date.toDateString();
-                         this.sendNotification({
+                        this.sendNotification({
                             from: {
                                 id: fromUser._id,
                                 name: fromUser.name,
@@ -70,13 +104,22 @@ class MyServer {
                                 email: toUser.email,
                                 avtar: toUser.avtar
                             },
+                            sender_id: fromUser._id,
+                            reciver_id: toUser._id,
                             sender_name: fromUser.name,
                             sender_email: fromUser.email,
                             sender_avtar: fromUser.avtar,
                             message: `${fromUser.name} Has Sent You A Friend Request.`,
                             date: today
                         });
-                        socket.emit("request-sent",true)
+                        this.pushRequest(
+                            from,
+                            fromUser.name,
+                            fromUser.email,
+                            fromUser.avtar,
+                            to
+                        );
+                        socket.emit("request-sent", true);
                     });
                 });
             });

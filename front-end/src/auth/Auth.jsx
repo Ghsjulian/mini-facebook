@@ -33,8 +33,21 @@ export const AuthProvider = ({ children }) => {
             return null;
         }
     };
-    const logout = () => {
-        setIsLogin(false); // Call this function when user logs out
+    const logout = async () => {
+        try {
+            const api = import.meta.env.VITE_API_URL;
+            const request = fetch(`${api}/logout`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    user: getUser()?.token || null
+                },
+                method: "GET"
+            });
+            const response = await request.json();
+            console.log(response);
+        } catch (error) {
+            console.log("Error On Logout : ", error.message);
+        }
     };
 
     return (

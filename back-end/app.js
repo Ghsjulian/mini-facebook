@@ -2,6 +2,7 @@ const express = require("express");
 const ejs = require("ejs");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const app = express();
 const server = require("http").createServer(app);
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(cors({ origin: "*" }));
+app.use(cookieParser());
 
  socketManager.init(server);
 // Static Routes Here
