@@ -3,7 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/css/index.css";
 import { setCookie } from "../auth/Cookies";
 import { useAuth } from "../auth/Auth";
-import { useSocket } from "../auth/SocketProvider";
+// import { useSocket } from "../auth/SocketProvider";
+import {useSocket} from "../socket/SocketProvider"
 
 const Login = () => {
     const { isAuthenticated } = useAuth();

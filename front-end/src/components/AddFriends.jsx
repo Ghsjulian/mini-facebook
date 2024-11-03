@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/Auth";
-import { useSocket } from "../auth/SocketProvider";
+import { useSocket } from "../socket/SocketProvider";
 
 const AddFriends = () => {
     const [peoples, setPeople] = useState([]);
-    const { addFriend } = useSocket();
+    const { addFriend,connectUserToServer } = useSocket();
     const { getUser } = useAuth();
     const fetchPeoples = async () => {
         const api = import.meta.env.VITE_API_URL;
@@ -22,6 +22,7 @@ const AddFriends = () => {
     useEffect(() => {
         fetchPeoples();
     }, []);
+      //  connectUserToServer(getUser().id)
 
     return (
         <div className="profile-section people">

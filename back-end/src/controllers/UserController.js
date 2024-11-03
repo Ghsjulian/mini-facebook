@@ -409,25 +409,29 @@ class UserController {
                 -"password"
             );
 
-            if (request.length > 0) {
-                request.forEach(reqUser => {
-                    if (
-                        reqUser.sender_id === id ||
-                        reqUser.to.id.toString() === id
-                    ) {
-                        requested.push(reqUser);
-                    }
-                });
-            }
-
             if (users) {
                 users.forEach(user => {
-                    peoples.push({
+                    if(user.connection>0){
+                    connection.forEach((connect)=>{
+                        if(connect.request_id !== id){
+                            peoples.push({
                         id: user._id,
                         name: user.name,
                         email: user.email,
                         avtar: user.avtar
                     });
+                        }
+                    })
+                }else{
+                    if(connect.request_id !== id){
+                            peoples.push({
+                        id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        avtar: user.avtar
+                    });
+                        }
+                }
                 });
 
                 return res.status(200).json({

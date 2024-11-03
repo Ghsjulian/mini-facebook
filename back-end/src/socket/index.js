@@ -67,11 +67,23 @@ class MyServer {
     async init(server) {
         this.io.attach(server);
         this.io.on("connection", socket => {
-            socket.emit("__init__", socket.id);
-            socket.on("new-user", userID => {
-                console.log(`\n [+] New User Connected -> ${userID}\n`);
-                this.users[userID] = this.getUser(userID);
-                this.io.emit("get-new-user", this.users[userID]);
+            // CONNECT NEW USER WITH SERVER -->
+            socket.on("new-user", user => {
+                user.sock_id = socket.id;
+                this.users[socket.id] = user;
+                this.io.emit("active-users", Object.values(this.users));
+                console.log(`\n [+] New User Connected -> ${user.id}\n`);
+                console.log(this.users);
+            });
+            //  LISTENING FOR NOTIFICATION 
+            socket.to(socket.id).emit("listening-notifications","Listening...")
+            // SEND FRIEND REQUEST TO A USER
+            socket.on("send-friend-request", (sock_id, from, to) => {
+                socket.to(sock_id).emit("get-friend-request", {
+                    sender_sock_id: socket.id,
+                    sender: from,
+                    reciver: to
+                });
             });
 
             /*-----------------------------*
