@@ -89,6 +89,43 @@ python run.py
 
 ---
 
+#### Folder Structure :
+
+```bash
+
+mini-facebook
+├── back-end
+│   ├── Index.html
+│   ├── app.js
+│   ├── package-lock.json
+│   └── package.json
+├── demo
+│   ├── m1.png
+│   ├── m2.png
+│   ├── m3.png
+│   ├── m4.png
+│   ├── m5.png
+│   ├── m6.png
+│   ├── s1.png
+│   ├── s2.png
+│   ├── s3.png
+│   ├── s4.png
+│   └── s5.png
+├── front-end
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── socket.js
+│   └── vite.config.js
+├── .gitignore
+├── README.md
+└── run.py
+```
+
+---
+
 #### Screensots And Demo (Desktop Mode) :
 
 <img src="/demo/s1.png" width="350px" height="200px"/><br/><br/>
