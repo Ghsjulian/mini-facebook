@@ -21,6 +21,7 @@ const AddFriends = () => {
             );
             const response = await request.json();
             if (response.success) {
+                console.log(response.peoples);
                 setPeople(response.peoples);
             }
         } catch (error) {
@@ -46,16 +47,27 @@ const AddFriends = () => {
                             <button
                                 onClick={e => {
                                     (e.target.textContent = "Adding"),
-                                        addFriend(
-                                            people._id,
-                                            e.target
-                                        );
+                                        addFriend(people._id, e.target);
+                                }}
+                                id={people._id}
+                                className={people.userType === "Requested"? "show-cancel" : "add"}
+                            >
+                               {people.userType ==="Requested"?"Cancel":"Add Friend"}
+                            </button> 
+                            
+                            
+                            {/*
+                            <button
+                                onClick={e => {
+                                    (e.target.textContent = "Adding"),
+                                        addFriend(people._id, e.target);
                                 }}
                                 id={people._id}
                                 className="add"
                             >
                                 Add Friend
                             </button>
+                            */}
                         </div>
                     );
                 })}

@@ -9,8 +9,25 @@ class FriendsController {
     async AddFriend(req, res) {
         const user = await functions.decodeJWT(req.headers.user);
         const target = req.params.userID;
+
         try {
-            return;
+            let isRequested = Request.findOne({
+                sender: user.id,
+                reciver: target
+            });
+            if (isRequested) {
+                const deleteRequest = Request.deleteOne({
+                    sender: user.id
+                });
+                return res.status(201).json({
+                    code: 201,
+                    status: true,
+                    error: false,
+                    success: true,
+                    message: "Friend Request Cancelled"
+                });
+            }else{
+
             const targetUser = await User.findOne({ _id: target });
             const newMssage = new NotificationModel({
                 sender_id: user.id,
@@ -22,6 +39,11 @@ class FriendsController {
             });
             let save = await newMssage.save();
             if (save) {
+                const request = new Request({
+                    sender: user.id,
+                    reciver: target
+                });
+                await request.save();
                 //socketServer.sendNotification()
                 return res.status(201).json({
                     code: 201,
@@ -32,6 +54,7 @@ class FriendsController {
                 });
             } else {
                 throw new Error("Unable to add friend");
+            }
             }
         } catch (error) {
             console.log(
@@ -66,12 +89,15 @@ class FriendsController {
                         reciver: user._id
                     } || { reciver: currentUser, sender: user._id };
                     const isFriend = await Friend.findOne(query);
-                    const isRequested = await Request.findOne(query2);
+                    const isRequested = await Request.findOne({
+                        sender: currentUser,
+                        reciver: user._id
+                    });
                     let userType = null;
                     if (isFriend) {
-                        userType = "friendship";
+                        userType = "Friendship";
                     } else if (isRequested) {
-                        userType = "requested";
+                        userType = "Requested";
                     }
 
                     return {
