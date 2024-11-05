@@ -5,25 +5,32 @@ import { useSocket } from "../socket/SocketProvider";
 
 const AddFriends = () => {
     const [peoples, setPeople] = useState([]);
-    const { addFriend,connectUserToServer } = useSocket();
+    const { addFriend, activeUsers } = useSocket();
     const { getUser } = useAuth();
     const fetchPeoples = async () => {
         const api = import.meta.env.VITE_API_URL;
         try {
-            const request = await fetch(`${api}/all-users/${getUser().id}`);
+            const request = await fetch(
+                `${api}/find-peoples/${getUser()?.id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        user: getUser()?.token || null
+                    }
+                }
+            );
             const response = await request.json();
             if (response.success) {
                 setPeople(response.peoples);
             }
         } catch (error) {
+            //  alert(JSON.stringify(error.message));
             console.log(error);
         }
     };
     useEffect(() => {
         fetchPeoples();
     }, []);
-      //  connectUserToServer(getUser().id)
-
     return (
         <div className="profile-section people">
             <h3>Add New Friend</h3>
@@ -31,17 +38,20 @@ const AddFriends = () => {
             {peoples.length > 0 &&
                 peoples.map((people, index) => {
                     return (
-                        <div className="flex">
-                            <NavLink to={`/profile?id=${people.id}`}>
+                        <div key={people._id} className="flex">
+                            <NavLink to={`/profile?id=${people._id}`}>
                                 <img src={people.avtar} />
                                 <span>{people.name}</span>
                             </NavLink>
                             <button
                                 onClick={e => {
                                     (e.target.textContent = "Adding"),
-                                        addFriend(people.id, e.target);
+                                        addFriend(
+                                            people._id,
+                                            e.target
+                                        );
                                 }}
-                                id={people.id}
+                                id={people._id}
                                 className="add"
                             >
                                 Add Friend

@@ -2,19 +2,11 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/css/index.css";
 import { setCookie } from "../auth/Cookies";
-import { useAuth } from "../auth/Auth";
+//import { useAuth } from "../auth/Auth";
 // import { useSocket } from "../auth/SocketProvider";
-import {useSocket} from "../socket/SocketProvider"
+//import { useSocket } from "../socket/SocketProvider";
 
 const Login = () => {
-    const { isAuthenticated } = useAuth();
-    const { connectUserToServer } = useSocket();
-    useEffect(() => {
-        if (isAuthenticated()) {
-            navigate("/");
-        }
-    }, [isAuthenticated()]);
-    
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     const [isLoading, setLoading] = useState(false);
@@ -71,11 +63,11 @@ const Login = () => {
             const response = await request.json();
             console.log(response);
             if (response.success) {
-                connectUserToServer(response.user.id)
                 setCookie("mini-facebook", JSON.stringify(response.user));
-                 txtRef.current.textContent = "Login Success";
+                txtRef.current.textContent = "Login Success";
                 showMessage(response.message, true);
                 loader.current.classList.remove("load");
+                navigate("/")
             } else {
                 txtRef.current.textContent = "Login Now";
                 showMessage(response.message, false);
@@ -124,9 +116,6 @@ const Login = () => {
         }
     };
 
-    
-    
-
     return (
         <div className="full-container">
             <div ref={loginContainer} className="login">
@@ -140,7 +129,6 @@ const Login = () => {
                     placeholder="Enter Email Address"
                     id="email"
                     name="email"
-                    autocomplete="off"
                     required
                     onChange={e => {
                         setemail(e.target.value);
@@ -153,7 +141,6 @@ const Login = () => {
                     placeholder="Enter Password"
                     id="password"
                     name="password"
-                    autocomplete="off"
                     required
                     onChange={e => {
                         setpassword(e.target.value);

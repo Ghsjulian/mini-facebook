@@ -1,10 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState,useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../auth/Auth";
+import { useSocket } from "../socket/SocketProvider";
 
 const Header = () => {
-    const { logout } = useAuth();
+    const { logout,getUser } = useAuth();
+    const { getNotification } = useSocket();
     const sideRef = useRef(null);
     const settingRef = useRef(null);
     const [isOpen, setisOpen] = useState(false);
@@ -17,6 +19,10 @@ const Header = () => {
         settingRef.current.classList.toggle("mobile-nav");
         setisOpenSetting(!isOpenSetting);
     };
+    useEffect(() => {
+      getNotification()
+    }, [getUser().id])
+    
     return (
         <>
             <header>

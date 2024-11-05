@@ -1,4 +1,21 @@
 <script>
+    const fetchPeoples = async () => {
+        const api = "http://localhost:3000/api/";
+        try {
+            const request = await fetch(
+                `http://localhost:3000/api/find-peoples/6721f7ac7bf1dada50c8be57`
+            );
+            const response = await request.json();
+
+            console.log(response);
+            // alert(JSON.stringify(response));
+        } catch (error) {
+            //alert(JSON.stringify(error.message));
+            console.log(error);
+        }
+    };
+    // fetchPeoples();
+
     window.location.href = "http://localhost:5173/add-friends";
-    //  window.location.href = "http://localhost:5173/";
+    //window.location.href = "http://localhost:3000";
 </script>

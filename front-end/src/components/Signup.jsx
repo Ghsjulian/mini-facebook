@@ -2,16 +2,16 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/css/index.css";
 import { setCookie } from "../auth/Cookies";
-import { useAuth } from "../auth/Auth";
+//import { useAuth } from "../auth/Auth";
 
 const Login = () => {
-    const { isAuthenticated } = useAuth();
-    useEffect(() => {
-        if (isAuthenticated()) {
-            navigate("/");
-        }
-    }, [isAuthenticated()]);
-
+    // const { isAuthenticated } = useAuth();
+//     useEffect(() => {
+//         if (isAuthenticated()) {
+//             navigate("/");
+//         }
+//     }, [isAuthenticated()]);
+// 
     const [userName, setuserName] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -149,7 +149,6 @@ const Login = () => {
                     placeholder="Enter Email Address"
                     id="name"
                     name="name"
-                    autocomplete="off"
                     required
                     onChange={e => {
                         setuserName(e.target.value);
@@ -162,7 +161,6 @@ const Login = () => {
                     placeholder="Enter Email Address"
                     id="email"
                     name="email"
-                    autocomplete="off"
                     required
                     onChange={e => {
                         setemail(e.target.value);
@@ -175,7 +173,6 @@ const Login = () => {
                     placeholder="Enter Password"
                     id="password"
                     name="password"
-                    autocomplete="off"
                     required
                     onChange={e => {
                         setpassword(e.target.value);

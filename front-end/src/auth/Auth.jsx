@@ -6,9 +6,7 @@ import { getCookie } from "./Cookies";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    // Change isLogin to be a state variable
     const [isLogin, setIsLogin] = useState(false); // Initially set to false or true based on your logic
-
     const isLoggedIn = () => {
         var isUser = getCookie("mini-facebook") || null;
         if (isUser && isUser !== null) {
@@ -74,7 +72,7 @@ export const Protect = ({ children }) => {
     if (!isAuthenticated()) {
         return <Navigate to="/login" />;
     }
-    return isAuthenticated() ? children : <Navigate to="/login" />;
+   return isAuthenticated() ? children : <Navigate to="/login" />;
 };
 export const LoginProtect = ({ children }) => {
     const { isAuthenticated } = useAuth();

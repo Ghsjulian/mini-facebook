@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, NavLink, Navigate } from "react-router-dom";
 import Post from "./Post";
-import { useAuth } from "../auth/Auth";
+//import { useAuth } from "../auth/Auth";
 import { setCookie } from "../auth/Cookies";
 
 const Profile = () => {
     const navigate = useNavigate();
-    const { isAuthenticated, getUser } = useAuth();
+  //  const { isAuthenticated, getUser } = useAuth();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const mesgRef = useRef(null);

@@ -1,41 +1,38 @@
 const express = require("express");
-const ejs = require("ejs");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const app = express();
-const server = require("http").createServer(app);
-const socketManager = require("./src/socket/");
+const socketManager = require("./socket/MyServer");
 const PORT = process.env.SERVER_PORT || 3000;
 const HOST = process.env.SERVER_HOST || "127.0.0.1";
 const DB = process.env.SERVER_DB || "mini-facebook";
 const URI = process.env.SERVER_URI || "mongodb://localhost:27017/";
 
-app.use(express.static("public"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.use(cors({ origin: "*" }));
-app.use(cookieParser());
+const publicPath = path.join(__dirname);
+socketManager.app.use(express.static(publicPath+"/public/"));
+socketManager.app.use(express.json());
+socketManager.app.use(express.urlencoded({ extended: true }));
+socketManager.app.use(cors({ origin: "*" }));
+socketManager.app.use(cookieParser());
 
- socketManager.init(server);
+// socketManager.init(server);
 // Static Routes Here
-app.get("/", (req, res) => {
-    res.render("index");
-});
-app.get("/login", (req, res) => {
-    res.render("login");
+socketManager.app.get("/", (req, res) => {
+    res.json({
+        message: "Home Routes..."
+    });
 });
 
 // setup api endpoints here
-const router = require("./src/router/");
-app.use("/api", router);
+const router = require("./router/");
+socketManager.app.use("/api", router);
 
 mongoose
     .connect(URI, { dbName: DB })
     .then(() => {
-        server.listen(PORT, () => {
+        socketManager.server.listen(PORT, () => {
             console.clear();
             console.log(
                 `\n ____________________________________________________`
@@ -53,4 +50,3 @@ mongoose
         console.clear();
         console.log(error);
     });
-module.exports = app;
