@@ -1,0 +1,361 @@
+.post {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 10px;
+    padding: 1rem;
+    background: var(--white);
+    max-width: 80%;
+    width: 100%;
+    margin: 1rem auto;
+}
+.post a {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.post a img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    border: 0.1px solid var(--icon) !important;
+    border-radius: 50%;
+}
+.post a span {
+    color: var(--icon);
+    font-weight: 900;
+    margin: 0 0.2rem;
+}
+.post .content {
+    margin-top: 2.3rem;
+    text-align: justify;
+    line-height: 1.5rem;
+    color: var(--txt);
+    font-weight: 900;
+}
+.post .action-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+.action-area button {
+    outline: none;
+    border: none;
+    background: var(--ico-hover);
+    padding: 0.2rem 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+.action-area button i {
+    color: var(--txt);
+    font-weight: 900;
+    font-size: 22px;
+}
+.action-area #icon-- {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+.action-area button span {
+    margin: 0 0.2rem;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--txt);
+}
+
+/* Post Writing */
+.post h3 {
+    color: var(--logo);
+    font-weight: bold;
+    text-align: center;
+    margin: 0.5rem auto;
+    width: 90%;
+}
+.post textarea {
+    resize: none;
+    width: 90%;
+    height: 100px;
+    outline: none;
+    border: 2px solid var(--logo);
+    border-radius: 8px;
+    margin: 0 auto;
+    padding: 1rem 0.5rem;
+    font-weight: 900;
+    color: var(--txt);
+}
+.post .post-btn {
+    margin: 0.5rem auto;
+    width: 90%;
+    background: var(--logo);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    font-weight: 900;
+    font-size: 17px;
+}
+
+/* User Profile */
+.profile-section {
+    position: relative;
+    border-radius: 10px;
+    padding: 1rem;
+    background: var(--white);
+    max-width: 80%;
+    width: 100%;
+    margin: 0.5rem auto;
+}
+.full-page {
+    width: 100%;
+    height: 100vh;
+    /* background: rgba(45, 45, 45, 0.244); */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+    overflow: hidden;
+    animation: 0.3s zoom linear;
+}
+.full-page .edit-form {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 10px;
+    padding: 1rem;
+    background: var(--white);
+    max-width: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.edit-form .close-edit {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ico-hover);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s ease-in;
+}
+.close-edit i {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--txt);
+}
+.close-edit:hover {
+    background: var(--logo);
+    color: #fff;
+}
+.close-edit:hover i {
+    color: var(--white);
+}
+.profile-section h2 {
+    text-align: center;
+    margin: 0.3rem auto;
+}
+.edit-form h2 {
+    color: var(--logo);
+}
+.edit-form label i {
+    font-size: 2.8rem;
+}
+.edit-form img {
+    width: 120px;
+    height: 120px;
+    object-fit: fill;
+    border-radius: 50%;
+    margin: 0.2rem auto;
+}
+.edit-form .error {
+    color: var(--error);
+    padding: 0.5rem 1rem;
+    border: 0.1px solid var(--error);
+    background: var(--error-bg);
+    border-radius: 5px;
+}
+.edit-form .success {
+    color: var(--success);
+    padding: 0.5rem 1rem;
+    border: 0.1px solid var(--success);
+    background: var(--suceess-bg);
+    border-radius: 5px;
+}
+.edit-form input {
+    outline: none;
+    border: 2px solid var(--logo);
+    border-radius: 5px;
+    padding: 0.7rem 1rem;
+    margin: 0.5rem;
+    color: #006a82;
+    font-weight: 500;
+}
+.edit-form button {
+    outline: none;
+    border: none;
+    background: var(--logo);
+    color: var(--white);
+    font-weight: 900;
+    padding: 0.7rem 1rem;
+    margin: 0.2rem auto;
+    width: 222px;
+    border-radius: 5px;
+    transition: 0.5s ease-in;
+}
+.edit-form button:hover {
+    background: #006a82;
+}
+.profile-section .profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.profile .edit {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ico-hover);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s ease-in;
+}
+.edit i {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--txt);
+}
+.profile .edit:hover {
+    background: var(--logo);
+    color: #fff;
+}
+.profile .edit:hover i {
+    color: var(--white);
+}
+.profile img {
+    width: 170px;
+    height: 170px;
+    object-fit: cover;
+    margin: 0.2rem auto;
+    padding: 2px;
+    border-radius: 50%;
+    border: 2.5px solid var(--logo);
+}
+.profile h3 {
+    text-align: center;
+    margin: 0.3rem auto;
+    color: var(--logo);
+}
+
+/* Add Friend Styling */
+.people {
+    max-height: 70vh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.people h3 {
+    text-align: center;
+    margin: 0.5rem auto;
+    padding: 0.8rem 0;
+    color: var(--txt);
+    font-weight: 900;
+    border-bottom: 1px solid var(--txt);
+}
+
+.people .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.5rem 0;
+    padding: 0.5rem 0;
+    width: 100%;
+    border-bottom: 0.1px solid #cdcdce;
+}
+.flex a {
+    outline: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--logo);
+}
+.flex a img {
+    width: 55px;
+    height: 55px;
+    padding: 2px;
+    border-radius: 50%;
+    border: 0.1px solid var(--logo);
+}
+.flex a span {
+    color: var(--logo);
+    font-weight: 700;
+    margin: 0 0.5rem;
+    font-size: 17px;
+}
+.flex button {
+    outline: none;
+    border: none;
+    background: var(--logo);
+    color: var(--white);
+    font-weight: 900;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    border-radius: 5px;
+    transition: 0.5s ease-in;
+}
+.flex .request-sent {
+    background: #013f4d;
+    color: var(--white);
+}
+.flex .hide-add {
+    display: none;
+}
+.flex .hide-cancel {
+    display: none;
+}
+.flex .show-cancel {
+    display: block;
+    background: #952500;
+    color: var(--white);
+}
+.flex .show-add {
+    display: block;
+    background: var(--logo);
+    color: var(--white);
+}
+@media (max-width: 768px) {
+    .profile-section,
+    .post {
+        width: 98%;
+        max-width: 95%;
+        margin: 1rem auto;
+    }
+}

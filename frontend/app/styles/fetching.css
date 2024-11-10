@@ -1,0 +1,55 @@
+:root {
+    --fetching: #eaeaea;
+}
+
+/*----People Fetching CSS-----*/
+.people .fetching-people {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.5rem 0;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+.fetching-people a {
+    outline: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--logo);
+}
+.fetching-people a .flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.fetching-people a .img {
+    width: 55px;
+    height: 55px;
+    padding: 2px;
+    border-radius: 50%;
+    background: var(--fetching);
+}
+.fetching-people a span {
+    color: var(--logo);
+    font-weight: 700;
+    margin: 0.3rem 0.5rem;
+    font-size: 17px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    width: 150px;
+    background: var(--fetching);
+}
+.fetching-people button {
+    outline: none;
+    border: none;
+    background: var(--fetching);
+    color: var(--white);
+    font-weight: 900;
+    padding: 1.3rem 1rem;
+    width: 100px;
+    margin: 0;
+    border-radius: 8px;
+    transition: 0.5s ease-in;
+}
+/*----People Fetching CSS-----*/

@@ -444,6 +444,6 @@ action.onclick = () => {
     //  AcceptFriendRequest();
     //  UnFriend();
     // SendMessage();
-    GetMessages();
+    // GetMessages();
     /*------------------------------------*/
 };

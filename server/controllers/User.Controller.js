@@ -462,7 +462,7 @@ class USerController {
                             status: true,
                             error: false,
                             success: true,
-                            message: "Friend Request Cancelled"
+                            message: "Request Cancelled"
                         });
                     } else {
                         await UserModel.updateOne(
@@ -474,7 +474,7 @@ class USerController {
                             status: true,
                             error: false,
                             success: true,
-                            message: "Friend Request Sent"
+                            message: "Request Sent"
                         });
                     }
                 } else {

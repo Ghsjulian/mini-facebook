@@ -1,13 +1,28 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <!--FAVICONS-->
+        <link rel="icon" type="image/png" href="/favicons/apple-touch-icon.png" />
+        <link href="favicons/apple-touch-icon.png" rel="apple-touch-icon" />
+        <!--FAVICONS-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Mini-Facebook Connect With People - Developed By Ghs Julian
+        </title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/app/main.jsx"></script>
+        <script>
+            javascript: (function () {
+                var script = document.createElement("script");
+                script.src = "http://localhost:8010/eruda.js";
+                document.body.appendChild(script);
+                script.onload = function () {
+                    eruda.init();
+                };
+            })();
+        </script>
+    </body>
 </html>
