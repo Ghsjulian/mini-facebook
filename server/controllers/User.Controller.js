@@ -271,6 +271,54 @@ class USerController {
             });
         }
     }
+    async GetOneUser(req, res) {
+        try {
+            if (req.user._id) {
+                const user = await UserModel.findOne({
+                    _id: req.params.user_id
+                });
+                if (user) {
+                    return res.status(200).json(user);
+                } else {
+                    throw new Error("No User Found In The Server");
+                }
+            } else {
+                throw new Error("Unauthorized User");
+            }
+        } catch (error) {
+            return res.json({
+                code: 403,
+                status: false,
+                error: true,
+                success: false,
+                message: error.message || "Something Went Worng"
+            });
+        }
+    }
+    async GetAllUser(req, res) {
+        try {
+            if (req.user._id) {
+                const users = await UserModel.find({
+                    _id: { $ne: req.user._id }
+                }).select(-"password");
+                if (users) {
+                    return res.status(200).json(users);
+                } else {
+                    throw new Error("No User Found In The Server");
+                }
+            } else {
+                throw new Error("Unauthorized User");
+            }
+        } catch (error) {
+            return res.json({
+                code: 403,
+                status: false,
+                error: true,
+                success: false,
+                message: error.message || "Something Went Worng"
+            });
+        }
+    }
     async UserLogout(req, res) {
         try {
             if (req.user._id) {
@@ -393,6 +441,141 @@ class USerController {
                 error: true,
                 success: false,
                 message: error.message
+            });
+        }
+    }
+    async SendFriendRequest(req, res) {
+        try {
+            if (req.user._id) {
+                const user = await UserModel.findOne({
+                    _id: req.params.user_id
+                });
+                if (user) {
+                    const requests = user.requests;
+                    if (requests.includes(req.user._id)) {
+                        await UserModel.updateOne(
+                            { _id: req.params.user_id },
+                            { $pull: { requests: req.user._id } }
+                        );
+                        return res.json({
+                            code: 200,
+                            status: true,
+                            error: false,
+                            success: true,
+                            message: "Friend Request Cancelled"
+                        });
+                    } else {
+                        await UserModel.updateOne(
+                            { _id: req.params.user_id },
+                            { $addToSet: { requests: req.user._id } }
+                        );
+                        return res.json({
+                            code: 200,
+                            status: true,
+                            error: false,
+                            success: true,
+                            message: "Friend Request Sent"
+                        });
+                    }
+                } else {
+                    throw new Error("No User Found In The Server");
+                }
+            } else {
+                throw new Error("Unauthorized User");
+            }
+        } catch (error) {
+            return res.json({
+                code: 403,
+                status: false,
+                error: true,
+                success: false,
+                message: error.message || "Something Went Worng"
+            });
+        }
+    }
+    async AcceptFriendRequest(req, res) {
+        try {
+            if (req.user._id) {
+                const user = await UserModel.findOne({
+                    _id: req.user._id
+                });
+                if (user) {
+                    const friends = user.friends;
+                    if (!friends.includes(req.params.user_id)) {
+                        await UserModel.updateOne(
+                            { _id: req.user._id },
+                            { $addToSet: { friends: req.params.user_id } }
+                        );
+                        await UserModel.updateOne(
+                            { _id: req.params.user_id },
+                            { $addToSet: { friends: req.user._id } }
+                        );
+                        return res.json({
+                            code: 200,
+                            status: true,
+                            error: false,
+                            success: true,
+                            message: "Friend Request Accepted"
+                        });
+                    } else {
+                        throw new Error("You're Aleady Friend");
+                    }
+                } else {
+                    throw new Error("No User Found In The Server");
+                }
+            } else {
+                throw new Error("Unauthorized User");
+            }
+        } catch (error) {
+            return res.json({
+                code: 403,
+                status: false,
+                error: true,
+                success: false,
+                message: error.message || "Something Went Worng"
+            });
+        }
+    }
+    async UnFriend(req, res) {
+        try {
+            if (req.user._id) {
+                const user = await UserModel.findOne({
+                    _id: req.user._id
+                });
+                if (user) {
+                    const friends = user.friends;
+                    if (friends.includes(req.params.user_id)) {
+                        await UserModel.updateOne(
+                            { _id: req.user._id },
+                            { $pull: { friends: req.params.user_id } }
+                        );
+                        await UserModel.updateOne(
+                            { _id: req.params.user_id },
+                            { $pull: { friends: req.user._id } }
+                        );
+                        return res.json({
+                            code: 200,
+                            status: true,
+                            error: false,
+                            success: true,
+                            message: "Unfriend Successfully"
+                        });
+                    } else {
+                        throw new Error("You're Not Friend");
+                    }
+                } else {
+                    throw new Error("No User Found In The Server");
+                }
+            } else {
+                throw new Error("Unauthorized User");
+            }
+        } catch (error) {
+            return res.json({
+                code: 403,
+                status: false,
+                error: true,
+                success: false,
+                message: error.message || "Something Went Worng"
             });
         }
     }

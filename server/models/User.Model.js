@@ -20,9 +20,16 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        requests : {
+            type: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User"
+                }
+            ]
+        },
         friends: {
-            type: Array,
-            default: [
+            type: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "User"

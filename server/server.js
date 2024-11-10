@@ -25,8 +25,10 @@ app.use(cookieParser());
 // Defined The API Endpoints 
 const UserRouter = require("./routes/User.Routes")
 const PostRouter = require("./routes/Post.Routes")
+const MessageRouter = require("./routes/Message.Routes")
 app.use("/api/user",UserRouter)
 app.use("/api/post",PostRouter)
+app.use("/api/message", MessageRouter)
 
 
 

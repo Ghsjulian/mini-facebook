@@ -17,5 +17,10 @@ router.put(
     upload.single("avatar"),
     USerController.UserUpdate
 );
+router.get("/get-user/:user_id", isLogin, USerController.GetOneUser);
+router.get("/get-all-user", isLogin, USerController.GetAllUser);
+router.get("/send-friend-request/:user_id", isLogin, USerController.SendFriendRequest);
+router.get("/accept-friend-request/:user_id", isLogin, USerController.AcceptFriendRequest);
+router.get("/unfriend/:user_id", isLogin, USerController.UnFriend);
 
 module.exports = router;

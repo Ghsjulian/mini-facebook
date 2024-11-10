@@ -25,8 +25,8 @@ const getCookie = cname => {
 const SignupNow = async () => {
     const api = "http://localhost:3000/api/user/signup";
     const user = {
-        name: "Ghs Julian",
-        email: "ghsjulian@gmail.com",
+        name: "Sunita Sinha",
+        email: "sunita@gmail.com",
         password: "123456"
     };
     try {
@@ -82,26 +82,6 @@ const LogoutNow = async () => {
         console.log(error);
     }
 };
-const GetMe = async () => {
-    const api = "http://localhost:3000/api/user/get-me";
-    const user = {
-        email: "ghsjulian@gmail.com",
-        password: "123456"
-    };
-    try {
-        const request = await fetch(api, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                minifacebook: getCookie("minifacebook") || null
-            }
-        });
-        const response = await request.json();
-        console.log(response);
-    } catch (error) {
-        console.log(error);
-    }
-};
 const ReadImage = async () => {
     try {
         // Fetch the image
@@ -139,6 +119,111 @@ const UpdateProfile = async () => {
                 minifacebook: getCookie("minifacebook") || null
             },
             body: formData
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const GetMe = async () => {
+    const api = "http://localhost:3000/api/user/get-me";
+    const user = {
+        email: "ghsjulian@gmail.com",
+        password: "123456"
+    };
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const GetOneUser = async () => {
+    let user_id = "672eece82d190f773e156986";
+    const api = "http://localhost:3000/api/user/get-user/" + user_id;
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const GetAllUser = async () => {
+    const api = "http://localhost:3000/api/user/get-all-user";
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const SendFriendRequest = async () => {
+    let user_id = "672eece82d190f773e156986";
+    const api = "http://localhost:3000/api/user/send-friend-request/" + user_id;
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const AcceptFriendRequest = async () => {
+    let user_id = "672eece82d190f773e156986";
+    const api =
+        "http://localhost:3000/api/user/accept-friend-request/" + user_id;
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const UnFriend = async () => {
+    let user_id = "672eece82d190f773e156986";
+    const api = "http://localhost:3000/api/user/unfriend/" + user_id;
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
         });
         const response = await request.json();
         console.log(response);
@@ -212,7 +297,7 @@ const GetOnePost = async () => {
     }
 };
 const GetAllPost = async () => {
-    const api = "http://localhost:3000/api/post/all-post";
+    const api = "http://localhost:3000/api/post/get-all-post";
     try {
         const request = await fetch(api, {
             method: "GET",
@@ -280,24 +365,85 @@ const CommentPost = async () => {
     }
 };
 
-/*------------------------*/
-/*------------------------*/
+/*---------------------------------------*/
+const SendMessage = async () => {
+    let receiver_id = "672eece82d190f773e156986";
+    const api = "http://localhost:3000/api/message/send-message/" + receiver_id;
+    const message = {
+        message: "This is test message"
+    };
+    try {
+        const request = await fetch(api, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            },
+            body: JSON.stringify(message)
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const GetMessages = async () => {
+    let receiver_id = "672eece82d190f773e156986";
+    const api = "http://localhost:3000/api/message/get-message/" + receiver_id;
+    try {
+        const request = await fetch(api, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                minifacebook: getCookie("minifacebook") || null
+            }
+        });
+        const response = await request.json();
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+/*---------------------------------------*/
 /*---------ACTION---------*/
 action.onclick = () => {
-/*--------------------------------------*/
-/*--> 01  */    //   SignupNow()
-/*--> 02  */    //   LoginNow();
-/*--> 03  */    //   LogoutNow();
-/*--> 04  */    //   GetMe();
-/*--> 05  */    //   ReadImage();
-/*--> 06  */    //   UpdateProfile();
-/*--> 06  */    //   CreatePost();
-/*--> 07  */    //   EditPost();
-/*--> 08  */    //   GetOnePost();
-/*--> 09  */    //   GetAllPost();
-/*--> 10  */    //   DeletePost();
-/*--> 11  */    //   LikePost();
-/*--> 12  */    //   CommentPost();
-/*------------------------------------*/
-
+    /*--------------------------------------*/
+    /*--> 01  */
+    //   SignupNow();
+    /*--> 02  */
+    //   LoginNow();
+    /*--> 03  */
+    //   LogoutNow();
+    /*--> 04  */
+    //   GetMe();
+    /*--> 05  */
+    //   GetOneUser();
+    /*--> 06  */
+    //   GetAllUser();
+    /*--> 07  */
+    //   ReadImage();
+    /*--> 08  */
+    //   UpdateProfile();
+    /*--> 09  */
+    //   CreatePost();
+    /*--> 10  */
+    //   EditPost();
+    /*--> 11  */
+    //   GetOnePost();
+    /*--> 12  */
+    //   GetAllPost();
+    /*--> 13  */
+    //   DeletePost();
+    /*--> 14  */
+    //   LikePost();
+    /*--> 15  */
+    //   CommentPost();
+    /*--> 16 */
+    // SendFriendRequest();
+    //  AcceptFriendRequest();
+    //  UnFriend();
+    // SendMessage();
+    GetMessages();
+    /*------------------------------------*/
 };

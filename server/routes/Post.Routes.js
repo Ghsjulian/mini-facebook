@@ -20,7 +20,7 @@ router.put(
     PostController.EditPost
 );
 router.get("/get-post/:post_id", isLogin, PostController.GetOnePost);
-router.get("/all-post", isLogin, PostController.GetAllPost);
+router.get("/get-all-post", isLogin, PostController.GetAllPost);
 router.delete("/delete-post/:post_id", isLogin, PostController.DeletePost);
 router.get("/like-post/:post_id", isLogin, PostController.LikePost);
 router.post("/comment-post/:post_id", isLogin, PostController.CommentPost);
