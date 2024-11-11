@@ -1,4 +1,4 @@
-import { getUser } from "../auth/isLogin";
+import { getUser,api } from "../auth/isLogin";
 import { useState } from "react";
 
 const useAddFriend = () => {
@@ -6,11 +6,9 @@ const useAddFriend = () => {
     const [result, setResult] = useState({});
 
     const AddFriend = async user_id => {
-        const api =
-            "http://localhost:3000/api/user/send-friend-request/" + user_id;
         try {
             setAdding(true);
-            const request = await fetch(api, {
+            const request = await fetch(`${api}/user/send-friend-request/${user_id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

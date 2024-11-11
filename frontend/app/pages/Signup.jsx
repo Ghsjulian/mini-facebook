@@ -2,11 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
-//import { useAuth } from "../auth/Auth";
+import {getUser,api} from "../auth/isLogin"
 
 const Signup = () => {
     const {setCookie} = useCookie()
-    const api = "http://localhost:3000/api/user/signup";
     const [userName, setuserName] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -56,7 +55,7 @@ const Signup = () => {
         txtRef.current.textContent = "Processing...";
         loader.current.classList.add("load");
         try {
-            const request = await fetch(api, {
+            const request = await fetch(`${api}/user/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user)

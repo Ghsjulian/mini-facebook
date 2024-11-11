@@ -1,13 +1,12 @@
-import { getUser } from "../auth/isLogin";
+import { getUser ,api} from "../auth/isLogin";
 import { useState } from "react";
 
 const useLogout = () => {
     const [loading, setLoading] = useState(false);
     const Logout = async () => {
-        const api = "http://localhost:3000/api/user/logout";
         try {
             setLoading(true);
-            const request = await fetch(api, {
+            const request = await fetch(`${api}/user/logout`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

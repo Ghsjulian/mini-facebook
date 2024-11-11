@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, NavLink, Navigate } from "react-router-dom";
 import Post from "../components/Post";
 //import { useAuth } from "../auth/Auth";
-import { getUser } from "../auth/isLogin";
+import { getUser, api } from "../auth/isLogin";
 
 const Profile = () => {
     const { user_id, user_name } = useParams();
-    const api = "http://localhost:3000/api/user/edit-profile";
+    const [getting, setGetting] = useState(false);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const [user,setUser] = useState({})
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const mesgRef = useRef(null);
@@ -64,7 +64,7 @@ const Profile = () => {
             formData.append("data", JSON.stringify(user));
             try {
                 setIsLoading(true);
-                const sendData = await fetch(api, {
+                const sendData = await fetch(`${api}/user/edit-profile`, {
                     method: "PUT",
                     /*headers: { "Content-Type": "multipart/form-data" },*/
                     body: formData
@@ -106,36 +106,102 @@ const Profile = () => {
             }
         };
     }, [file]);
-    
-   const fetcUser = async()=>{
-       const api = "http://localhost:3000/api/user/get-user/" + user_id;
-    try {
-        const request = await fetch(api, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                minifacebook: getUser().token|| null
-            }
-        });
-        const response = await request.json();
-        document.title = "Profile Page -  Mini-Facebook Created By Ghs Julian";
-        setUser(response)
-        console.log(response);
-    } catch (error) {
-        console.log("Error in Client profile --> ", error.message);
-        setIsLoading(false)
-    }finally{
-        setIsLoading(false)
-    }
-   }
+
     useEffect(() => {
+        const fetchUser = async user_id => {
+            try {
+                setGetting(true);
+                const request = await fetch(`${api}/user/get-user/${user_id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        minifacebook: getUser().token || null
+                    }
+                });
+                if (!request.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const response = await request.json();
+                setUser(response);
+                setGetting(false);
+                document.title = "Profile Page - " + response.name;
+            } catch (error) {
+                console.error(
+                    "Error in Profile.jsx Fetching User --> ",
+                    error.message
+                );
+            } finally {
+                setGetting(false);
+            }
+        };
         if (getUser().id === user_id) {
-            document.title = "Profile Page - "+user_name+" Mini-Facebook Created By Ghs Julian";
-        }else{
-            fetcUser()
+            document.title = "Profile Page - " + user_name;
         }
+        fetchUser(user_id);
+        if (getting) return;
+        fetchUser(user_id);
     }, [user_id, user_name]);
 
+    return (
+        <>
+            {user !== null && (
+                <div className="profile-section">
+                    <div className="profile-head">
+                        <div className="cover">
+                            <div className="pencil">
+                                <img src="/icons/camera.png" />
+                            </div>
+                            <img src="/bg.png" alt="Cover Photo" />
+                        </div>
+                        <div className="profile-pic">
+                            <div className="pencil">
+                                <img src="/icons/camera.png" />
+                            </div>
+                            <img
+                                src={
+                                    user.avatar ? user.avatar : "/icons/man.png"
+                                }
+                                alt="Profile Photo"
+                            />
+                        </div>
+                    </div>
+                    <div className="name-section">
+                        <h3>{user.name}</h3>
+                        <h5>{user.email}</h5>
+                        <h6>Joined Since - 25 January 2024</h6>
+
+                        {/*--> User Edit Profile Action --> */}
+                        {getUser().id === user._id && (
+                            <div className="action-area">
+                                <button className="edit-personal">
+                                    Edit Profile
+                                </button>
+                                <button className="update-profile">
+                                    Update Cover
+                                </button>
+                            </div>
+                        )}
+                        {/*--> If User Already Friend --> */}
+                        {user.friends.includes(getUser.id)&&
+                        <div className="action-area">
+                            <button className="message">Send Message</button>
+                            <button className="unfriend">Unfriend</button>
+                        </div>
+                        }
+                        {/*--> If Not Fruend --> */}
+                        <div className="action-area">
+                            <button className="disabled-message">
+                                You Can't Message
+                            </button>
+                            <button className="add">Add Friend</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+
+    /*
     return (
         <>
             <div
@@ -162,7 +228,7 @@ const Profile = () => {
                         type="file"
                         multiple
                         id="avtar"
-                        accept="*/*"
+                        accept="/*"
                         hidden
                     />
                     <input
@@ -214,6 +280,7 @@ const Profile = () => {
             <Post />
         </>
     );
+    */
 };
 
 export default Profile;

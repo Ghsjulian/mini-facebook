@@ -298,11 +298,24 @@ class USerController {
     async GetAllUser(req, res) {
         try {
             if (req.user._id) {
+                var AllUsers = [];
                 const users = await UserModel.find({
                     _id: { $ne: req.user._id }
                 }).select(-"password");
                 if (users) {
-                    return res.status(200).json(users);
+                    users.forEach(user => {
+                        AllUsers.push({
+                            _id: user._id,
+                            name: user.name,
+                            email: user.email,
+                            avatar: user.avatar,
+                            friends: user.friends ? user.friends : [],
+                            requests: user.requests ? user.requests : [],
+                            is_requested : user.requests? user.requests.includes(req.user._id):false,
+                            is_friend : user.friends ? user.friends.includes(req.user._id):false
+                        });
+                    });
+                    return res.status(200).json(AllUsers);
                 } else {
                     throw new Error("No User Found In The Server");
                 }

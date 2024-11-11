@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
+import {getUser,api} from "../auth/isLogin"
 // import { setCookie } from "../auth/Cookies";
 //import { useAuth } from "../auth/Auth";
 // import { useSocket } from "../auth/SocketProvider";
@@ -9,7 +10,6 @@ import useCookie from "../hooks/useCookie";
 
 const Login = () => {
     const { setCookie } = useCookie();
-    const api = "http://localhost:3000/api/user/login";
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     const [isLoading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const Login = () => {
         txtRef.current.textContent = "Processing...";
         loader.current.classList.add("load");
         try {
-            const request = await fetch(api, {
+            const request = await fetch(`${api}/user/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user)

@@ -45,7 +45,7 @@ const Header = () => {
                     </NavLink>
                     <NavLink to="#">
                         {/*<i className="bi bi-box-arrow-right"></i>*/}
-                        <img id="icon--" src="icons/settings.png" />
+                        <img id="icon--" src="icons/setting-2.png" />
                     </NavLink>
                     <NavLink
                         to="#"
@@ -73,10 +73,22 @@ const Header = () => {
                         <img id="icon--" src="icons/peoples.png" />
                     </button>
                     <button onClick={OpenSettings} className="settings">
+                        {isOpenSetting ? (
+                            <img id="icon--" src="icons/close-x.png" />
+                        ) : (
+                            <img
+                                id="icon--"
+                                src="icons/menu-one.png"
+                                width="28"
+                                height="28"
+                            />
+                        )}
+                        {/*
                         <i
                             id="settings"
                             className={isOpenSetting ? "bi-x" : "bi bi-justify"}
                         ></i>
+                        */}
                     </button>
                 </div>
             </header>

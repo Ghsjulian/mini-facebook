@@ -1,5 +1,7 @@
 import useCookie from "../hooks/useCookie";
 
+export const api = import.meta.env.VITE_API_URL;
+
 export const isLogin = () => {
     const { getCookie } = useCookie();
     const cookie = getCookie("minifacebook") || null;

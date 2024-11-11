@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { getUser } from "../auth/isLogin";
+import { getUser, api } from "../auth/isLogin";
 import useFindFriend from "../hooks/useFindFriend";
 import useAddFriend from "../hooks/useAddFriend";
 import PeopleFetching from "../skeletons/PeopleFetching";
 
 const AddFriends = () => {
     const { isFetching, peoples, FindPeoples } = useFindFriend();
-    const { adding, result, AddFriend } = useAddFriend();
+    const { result, AddFriend } = useAddFriend();
     // Local state to track friend request status
     const [friendRequests, setFriendRequests] = useState({});
-    const [requestType, setRequestType] = useState("DEFAULT");
+    const [adding, setAdding] = useState(false);
 
     useEffect(() => {
         FindPeoples();
@@ -19,24 +19,63 @@ const AddFriends = () => {
 
     const isRequested = people => {
         if (people.requests.includes(getUser().id)) {
-            setRequestType("SENT");
             return true;
         } else {
-            setRequestType("CANCEL");
             return false;
         }
     };
 
     const handleAddFriend = async (people, id) => {
         const btn = document.getElementById(id);
+        try {
+            setAdding(true);
+            await AddFriend(id);
+            const request = await fetch(`${api}/user/get-user/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    minifacebook: getUser().token || null
+                }
+            });
+            if (!request.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const response = await request.json();
+            btn.setAttribute("class", "");
+            setAdding(false);
+            if (isRequested(response)) {
+                btn.classList.add("show-cancel");
+                btn.textContent = "Cancel Request";
+            } else {
+                btn.classList.add("add");
+                btn.textContent = "Add Friend";
+            }
+        } catch (error) {
+            console.error(
+                "Error Fetching User In Client Side Add-Friend --> ",
+                error.message
+            );
+            setAdding(false);
+        } finally {
+            setAdding(false);
+        }
+        /*
         // Call the AddFriend function
         await AddFriend(id);
-        isRequested(people);
+        if (user !== null) {
+            console.log(user);
+            // alert(JSON.stringify(user));
+            //btn.textContent = "Cancel Request"
+            // btn.classList.add("show-cancel")
+            // btn.classList.add("show-cancel")
+        }
+
         // Update the local state to reflect the friend request status
         setFriendRequests(prev => ({
             ...prev,
             [id]: "pending" // or 'added' based on your logic
         }));
+        */
     };
 
     return (
@@ -71,12 +110,10 @@ const AddFriends = () => {
                                 }}
                                 id={people._id}
                                 className={
-                                    isRequested(people)
-                                        ? "show-cancel"
-                                        : "add"
+                                    people.is_requested ? "show-cancel" : "add"
                                 }
                             >
-                                {isRequested(people)
+                                {people.is_requested
                                     ? "Cancel Request"
                                     : "Add Friend"}
                             </button>
