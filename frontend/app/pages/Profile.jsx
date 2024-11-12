@@ -144,19 +144,23 @@ const Profile = () => {
 
     return (
         <>
-            {user !== null && (
+            {!getting && user._id !== null && (
                 <div className="profile-section">
                     <div className="profile-head">
                         <div className="cover">
-                            <div className="pencil">
-                                <img src="/icons/camera.png" />
-                            </div>
+                            {getUser().id === user._id && (
+                                <div className="pencil">
+                                    <img src="/icons/camera.png" />
+                                </div>
+                            )}
                             <img src="/bg.png" alt="Cover Photo" />
                         </div>
                         <div className="profile-pic">
-                            <div className="pencil">
-                                <img src="/icons/camera.png" />
-                            </div>
+                            {getUser().id === user._id && (
+                                <div className="pencil">
+                                    <img src="/icons/camera.png" />
+                                </div>
+                            )}
                             <img
                                 src={
                                     user.avatar ? user.avatar : "/icons/man.png"
@@ -182,19 +186,36 @@ const Profile = () => {
                             </div>
                         )}
                         {/*--> If User Already Friend --> */}
-                        {user.friends.includes(getUser.id)&&
-                        <div className="action-area">
-                            <button className="message">Send Message</button>
-                            <button className="unfriend">Unfriend</button>
-                        </div>
-                        }
+                        {user.friends?.includes(getUser().id) && (
+                            <div className="action-area">
+                                <button className="message">
+                                    Send Message
+                                </button>
+                                <button className="unfriend">Unfriend</button>
+                            </div>
+                        )}
                         {/*--> If Not Fruend --> */}
-                        <div className="action-area">
-                            <button className="disabled-message">
-                                You Can't Message
-                            </button>
-                            <button className="add">Add Friend</button>
-                        </div>
+                        {!user.friends?.includes(getUser().id) &&
+                            getUser().id !== user._id && (
+                                <div className="action-area">
+                                    <button className="disabled-message">
+                                        Can't Message
+                                    </button>
+                                    <button
+                                        className={
+                                            user.requests?.includes(
+                                                getUser().id
+                                            )
+                                                ? "cancel-request"
+                                                : "add"
+                                        }
+                                    >
+                                        {user.requests?.includes(getUser().id)
+                                            ? "Cancel Request"
+                                            : "Add Friend"}
+                                    </button>
+                                </div>
+                            )}
                     </div>
                 </div>
             )}

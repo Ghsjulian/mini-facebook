@@ -401,6 +401,16 @@
     border-radius: 5px;
     transition: 0.5s ease-in;
 }
+
+.action-area .cancel-request{
+    background: #a60202;
+    color: var(--white);
+    font-weight: 900;
+    margin: 0;
+    border-radius: 5px;
+    transition: 0.5s ease-in;
+}
+
 .action-area .unfriend {
     background: #a60202;
     color: var(--white);
