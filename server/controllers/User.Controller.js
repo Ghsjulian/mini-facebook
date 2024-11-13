@@ -359,11 +359,15 @@ class USerController {
         }
     }
     async UserUpdate(req, res) {
-        const data = JSON.parse(req.body.data);
-        var isAvatar = false;
-        var filename = "";
-        var password = "";
-
+       // const data = JSON.parse(req.body.data);
+        
+        console.log(req.files);
+        
+        res.json({
+            msg:"Server...."
+        })
+        
+        /*
         try {
             if (data.avatar === "YES") {
                 isAvatar = true;
@@ -428,6 +432,7 @@ class USerController {
                 });
             }
         }
+        */
     }
     async DeleteUser(req, res) {
         try {

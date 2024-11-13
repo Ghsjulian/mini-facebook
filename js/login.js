@@ -22,6 +22,12 @@ const getCookie = cname => {
     }
     return "";
 };
+
+const getToken = () => {
+    var obj = JSON.parse(getCookie("minifacebook"));
+    return obj.token;
+};
+
 const SignupNow = async () => {
     const api = "http://localhost:3000/api/user/signup";
     const user = {
@@ -94,7 +100,8 @@ const ReadImage = async () => {
         const formData = new FormData();
         // Append the Blob to the FormData object
         let name = "post_img"; // "avatar" for profile picture
-        formData.append(name, blob, "user.jpg");
+        formData.append("coverPic", blob, "user.jpg");
+        formData.append("profilePic", blob, "user2.jpg");
         return formData;
         // You can specify a filename
     } catch (error) {
@@ -105,10 +112,8 @@ const ReadImage = async () => {
 const UpdateProfile = async () => {
     const api = "http://localhost:3000/api/user/edit-profile";
     const user = {
-        email: "ghsjulian@gmail.com",
-        new_password: "12345678",
-        current_password: "123456",
-        avatar: (await ReadImage) ? "YES" : "NO"
+        isProfile: (await ReadImage) ? "YES" : "NO",
+        isCover: (await ReadImage) ? "YES" : "NO"
     };
     var formData = await ReadImage();
     formData.append("data", JSON.stringify(user));
@@ -116,7 +121,7 @@ const UpdateProfile = async () => {
         const request = await fetch(api, {
             method: "PUT",
             headers: {
-                minifacebook: getCookie("minifacebook") || null
+                minifacebook: getToken() || null
             },
             body: formData
         });
@@ -424,7 +429,7 @@ action.onclick = () => {
     /*--> 07  */
     //   ReadImage();
     /*--> 08  */
-    //   UpdateProfile();
+    UpdateProfile();
     /*--> 09  */
     //   CreatePost();
     /*--> 10  */

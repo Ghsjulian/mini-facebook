@@ -15,8 +15,9 @@ const Profile = () => {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const [password, setPassword] = useState("");
-    const [file, setFile] = useState(null);
-    const [fileData, setFileDataUrl] = useState(null);
+    const [profilePic, setProfilePic] = useState(null);
+    const [coverPic, setCoverPic] = useState(null);
+    const profileRef = useRef(null);
     const formRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
     const openEditForm = () => {
@@ -25,87 +26,90 @@ const Profile = () => {
     const closeEditForm = () => {
         formRef.current.style.display = "none";
     };
-    const handleFileChange = event => {
-        const imgfile = event.target.files[0];
-        setFile(imgfile);
-    };
-    const showMessage = (message, type) => {
-        if (type) {
-            mesgRef.current.classList.add("success");
-            mesgRef.current.textContent = message;
-            closeEditForm();
-        } else {
-            mesgRef.current.classList.add("error");
-            mesgRef.current.textContent = message;
+
+    const handleCoverImageChange = event => {
+        const file = event.target.files[0];
+        setCoverPic(file)
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+            };
+            reader.readAsDataURL(file); // Read the file as a data URL
         }
-        setTimeout(() => {
-            mesgRef.current.textContent = "";
-            mesgRef.current.setAttribute("class", "");
-        }, 3500);
     };
 
-    const sendDataToServer = async () => {
-        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-            emailRef.current.focus();
-            showMessage("Invalid Email Address", false);
-        } else if (password.trim().length < 5) {
-            passwordRef.current.focus();
-            showMessage("Password Will Be 6<", false);
-        } else {
-            // const api = import.meta.env.VITE_API_URL;
-            const user = {
-                name: name ? name : "",
-                email: email ? email : "",
-                password: password ? password : "",
-                avatar: fileData && "YES"
+    const handleProfileImageChange = event => {
+        const file = event.target.files[0];
+        setProfilePic(file)
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
             };
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("data", JSON.stringify(user));
-            try {
-                setIsLoading(true);
-                const sendData = await fetch(`${api}/user/edit-profile`, {
-                    method: "PUT",
-                    /*headers: { "Content-Type": "multipart/form-data" },*/
-                    body: formData
-                    // JSON.stringify(data)
-                });
-                const response = await sendData.json();
-                setIsLoading(false);
-                if (response.success) {
-                    showMessage(response.message, true);
-                    setName("");
-                    setEmail("");
-                    setPassword("");
-                    setFileDataUrl("");
-                    setCookie("mini-facebook", JSON.stringify(response.user));
-                } else {
-                    throw new Error("Server Timeout Error");
-                }
-            } catch (error) {
-                console.log(error);
-                setIsLoading(false);
-            }
+            reader.readAsDataURL(file); // Read the file as a data URL
         }
     };
-    useEffect(() => {
-        let fileReader;
-        if (file) {
-            fileReader = new FileReader();
-            fileReader.onload = e => {
-                const { result } = e.target;
-                if (result) {
-                    setFileDataUrl(result);
-                }
-            };
-            fileReader.readAsDataURL(file);
+
+
+    const showProfileMessage = (type, msg) => {
+        if (type) {
+            profileRef.current.classList.add("success-profile");
+            profileRef.current.textContent = msg;
+        } else {
+            profileRef.current.classList.add("error-profile");
+            profileRef.current.textContent = msg;
         }
-        return () => {
-            if (fileReader && fileReader.readyState === 1) {
-                fileReader.abort();
-            }
+        setTimeout(() => {
+            profileRef.current.setAttribute("class", "");
+            profileRef.current.textContent = "";
+        }, 3000);
+    };
+    const updateProfile = async () => {
+        // Check if both images are null
+        if (profilePic === null && coverPic === null) {
+            showProfileMessage(false, "Select A Profile Or Cover Image");
+            return;
+        }
+
+        // Create FormData object
+        var formData = new FormData();
+
+        // Check if profilePic is not null and append it
+        if (profilePic !== null) {
+            formData.append("profilePic",profilePic);
+        }
+        // Check if coverPic is not null and append it
+        if (coverPic !== null) {
+            formData.append("coverPic", coverPic);
+        }
+        let bodyData = {
+            isCover: coverPic ? "YES" : "NO",
+            isProfile: profilePic ? "YES" : "NO"
         };
-    }, [file]);
+        formData.append("images", JSON.stringify(bodyData));
+        try {
+            const response = await fetch(`${api}/user/edit-profile`, {
+                method: "PUT",
+                headers: {
+                    minifacebook: getUser().token || null
+                },
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const result = await response.json();
+            showProfileMessage(true, "Profile updated successfully!");
+        } catch (error) {
+            console.error(
+                "Error in Profile Update Client Side --> ",
+                error.message
+            );
+            showProfileMessage(
+                false,
+                "Failed to update profile. Please try again."
+            );
+        }
+    };
 
     useEffect(() => {
         const fetchUser = async user_id => {
@@ -141,30 +145,49 @@ const Profile = () => {
         if (getting) return;
         fetchUser(user_id);
     }, [user_id, user_name]);
-
     return (
         <>
-            {!getting && user._id !== null && (
+            {!getting && user?._id && user?._id !== null && (
                 <div className="profile-section">
                     <div className="profile-head">
+                        <div ref={profileRef} className=""></div>
                         <div className="cover">
                             {getUser().id === user._id && (
                                 <div className="pencil">
-                                    <img src="/icons/camera.png" />
+                                    <label htmlFor="cover-photo">
+                                        <img src="/icons/camera.png" />
+                                    </label>
+                                    <input
+                                        onChange={handleCoverImageChange}
+                                        id="cover-photo"
+                                        type="file"
+                                        accept="*/*"
+                                        hidden
+                                    />
                                 </div>
                             )}
-                            <img src="/bg.png" alt="Cover Photo" />
+                            <img
+                                src={coverPic ? coverPic : "/bg.png"}
+                                alt="Cover Photo"
+                            />
                         </div>
                         <div className="profile-pic">
                             {getUser().id === user._id && (
                                 <div className="pencil">
-                                    <img src="/icons/camera.png" />
+                                    <label htmlFor="profile-photo">
+                                        <img src={"/icons/camera.png"} />
+                                    </label>
+                                    <input
+                                        onChange={handleProfileImageChange}
+                                        id="profile-photo"
+                                        type="file"
+                                        accept="*/*"
+                                        hidden
+                                    />
                                 </div>
                             )}
                             <img
-                                src={
-                                    user.avatar ? user.avatar : "/icons/man.png"
-                                }
+                                src={profilePic ? profilePic : user.avatar}
                                 alt="Profile Photo"
                             />
                         </div>
@@ -180,8 +203,13 @@ const Profile = () => {
                                 <button className="edit-personal">
                                     Edit Profile
                                 </button>
-                                <button className="update-profile">
-                                    Update Cover
+                                <button
+                                    onClick={updateProfile}
+                                    className="update-profile"
+                                >
+                                    {profilePic || coverPic
+                                        ? "Update Now"
+                                        : "Update Profile"}
                                 </button>
                             </div>
                         )}

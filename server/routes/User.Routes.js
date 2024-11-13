@@ -14,8 +14,8 @@ router.get("/get-me", isLogin, USerController.UserMe);
 router.put(
     "/edit-profile",
     isLogin,
-    upload.single("avatar"),
-    USerController.UserUpdate
+upload.fields([{ name: 'profilePic', maxCount: 1 }, { name: 'coverPic', maxCount: 1 }]), // Modify this line
+       USerController.UserUpdate
 );
 router.get("/get-user/:user_id", isLogin, USerController.GetOneUser);
 router.get("/get-all-user", isLogin, USerController.GetAllUser);

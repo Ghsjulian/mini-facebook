@@ -282,7 +282,30 @@
     padding: 0.5rem 0;
     width: 100%;
     height: auto;
+    padding: 0.5rem;
     margin-bottom: 0.5rem;
+}
+.profile-head .error-profile {
+    color: #c50606;
+    font-weight: 900;
+    background: rgba(178, 57, 2, 0.122);
+    border: 1px solid #b23902;
+    display: block;
+    margin: 0.3rem auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-bottom: 0.7rem;
+}
+.profile-head .success-profile {
+    color: #0b8300;
+    font-weight: 900;
+    background: rgba(2, 178, 13, 0.122);
+    border: 1px solid #2a7a00;
+    display: block;
+    margin: 0.3rem auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-bottom: 0.7rem;
 }
 .profile-head .cover {
     position: relative;
@@ -298,8 +321,8 @@
 }
 .cover .pencil {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -4px;
+    right: -4px;
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -368,7 +391,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: .3rem 0;
+    margin: 0.3rem 0;
 }
 .action-area button {
     outline: none;
@@ -402,7 +425,7 @@
     transition: 0.5s ease-in;
 }
 
-.action-area .cancel-request{
+.action-area .cancel-request {
     background: #a60202;
     color: var(--white);
     font-weight: 900;
