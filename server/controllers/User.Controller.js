@@ -85,7 +85,9 @@ class USerController {
                     const newUser = await new UserModel({
                         name,
                         email,
-                        password: hashedPassword
+                        password: hashedPassword,
+                        avatar: api + "/users/default-user.png",
+                        cover: api + "/users/default-cover.png"
                     });
                     if (await newUser.save()) {
                         const currentID = newUser._id;
@@ -311,8 +313,12 @@ class USerController {
                             avatar: user.avatar,
                             friends: user.friends ? user.friends : [],
                             requests: user.requests ? user.requests : [],
-                            is_requested : user.requests? user.requests.includes(req.user._id):false,
-                            is_friend : user.friends ? user.friends.includes(req.user._id):false
+                            is_requested: user.requests
+                                ? user.requests.includes(req.user._id)
+                                : false,
+                            is_friend: user.friends
+                                ? user.friends.includes(req.user._id)
+                                : false
                         });
                     });
                     return res.status(200).json(AllUsers);
@@ -358,15 +364,72 @@ class USerController {
             });
         }
     }
-    async UserUpdate(req, res) {
-       // const data = JSON.parse(req.body.data);
-        
-        console.log(req.files);
-        
-        res.json({
-            msg:"Server...."
-        })
-        
+    async UserProfileUpdate(req, res) {
+        const data = JSON.parse(req.body.images);
+        var profilePic = null;
+        var coverPic = null;
+        var isProfile,
+            isCover = false;
+
+        if (data.isProfile === "YES") {
+            isProfile = true;
+            profilePic = api + "/users/" + req.files.profilePic[0].filename;
+        }
+        if (data.isCover === "YES") {
+            isCover = true;
+            coverPic = api + "/users/" + req.files.coverPic[0].filename;
+        }
+
+        try {
+            const user = await UserModel.findOne({ _id: req.user._id });
+            const update = await UserModel.findByIdAndUpdate(req.user._id, {
+                avatar: isProfile ? profilePic : user.avatar,
+                cover: isCover ? coverPic : user.cover
+            });
+            if (update) {
+                if (isProfile) {
+                    Utils.DeleteFile(user.avatar, "default-user.png");
+                }
+                if (isCover) {
+                    Utils.DeleteFile(user.cover, "default-cover.png");
+                }
+                return res.status(200).json({
+                    code: 200,
+                    status: true,
+                    error: false,
+                    success: true,
+                    message: "Profile Updated Successfully"
+                });
+            } else {
+                throw new Error("Error While Updating Profile !");
+            }
+        } catch (error) {
+            console.log(
+                "Error In Updating Profile Photo And Cover Photo On Backend Server Side --> "
+            );
+            console.log(error.message);
+            if (isProfile) {
+                await Utils.DeleteFile(profilePic, "default-user.png");
+                return res.status(403).json({
+                    code: 403,
+                    status: false,
+                    error: true,
+                    success: false,
+                    message: error.message || "Server Error -403"
+                });
+            }
+            if (isCover) {
+                await Utils.DeleteFile(coverPic, "default-cover.png");
+                return res.status(403).json({
+                    code: 403,
+                    status: false,
+                    error: true,
+                    success: false,
+                    message: error.message || "Server Error -403"
+                });
+            }
+        }
+
         /*
         try {
             if (data.avatar === "YES") {
@@ -433,6 +496,66 @@ class USerController {
             }
         }
         */
+    }
+    async PersonalInfoUpdate(req, res) {
+        const { name, email, current_password, new_password } = req.body;
+        var hashedPassword;
+
+        try {
+            if (current_password) {
+                if (current_password.trim().length < 6) {
+                    throw new Error("Current Password Length Will Be 6");
+                }
+            }
+            if (new_password) {
+                if (new_password.trim().length < 6) {
+                    throw new Error("New Password Length Will Be 6");
+                }
+            }
+
+            const isExist = await UserModel.findOne({ _id: req.user._id });
+            if (isExist) {
+                if (new_password && current_password) {
+                    const isOkPassword = await Utils.compareHashed(
+                        current_password,
+                        isExist.password
+                    );
+                    if (isOkPassword) {
+                        hashedPassword = await Utils.makeHash(new_password);
+                    } else {
+                        throw new Error("Invalid User Password");
+                    }
+                }
+                const update = await UserModel.findByIdAndUpdate(req.user._id, {
+                    name: name ? name : isExist.name,
+                    email: email ? email : isExist.email,
+                   password: new_password
+                        ? hashedPassword
+                        : isExist.password
+                });
+                if (update) {
+                    return res.status(200).json({
+                        code: 200,
+                        status: true,
+                        error: false,
+                        success: true,
+                        message: "Profile Updated Successfully"
+                    });
+                } else {
+                    throw new Error("Error While Updating Profile !");
+                }
+            } else {
+                throw new Error("User Not Found");
+            }
+        } catch (error) {
+            return res.status(403).json({
+                code: 403,
+                status: false,
+                error: true,
+                success: false,
+                message: error.message
+            });
+        }
     }
     async DeleteUser(req, res) {
         try {

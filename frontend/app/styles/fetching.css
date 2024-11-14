@@ -53,3 +53,111 @@
     transition: 0.5s ease-in;
 }
 /*----People Fetching CSS-----*/
+/*----Posts Fetching CSS-----*/
+.post-fetching {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 10px;
+    padding: 1rem;
+    background: var(--white);
+    max-width: 80%;
+    margin: 1rem auto;
+}
+.post-fetching a {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.post-fetching a .img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    background: var(--fetching);
+    border: 0.1px solid var(--f);
+    border-radius: 50%;
+}
+.post-fetching a span {
+    color: var(--icon);
+    font-weight: 900;
+    margin: 0 0.5rem;
+    width: 100px;
+    height: 15px;
+    background: var(--fetching);
+    border-radius: 8px;
+}
+.post-fetching .content {
+    width: 100%;
+    margin-top: 2.3rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0.7rem 0;
+    line-height: 1.5rem;
+    color: var(--txt);
+    font-weight: 900;
+}
+.post-fetching .content .img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+    background: var(--fetching);
+}
+.post-fetching .content p {
+    font-size: 15px;
+    padding: 0.5rem;
+    width: 100px;
+    height: 15px;
+    background: var(--fetching);
+    border-radius: 8px;
+}
+.post-fetching .date {
+    position: absolute;
+    top: 15px;
+    right: 3px;
+    display: flex;
+    text-align: left;
+    justify-content: left;
+    padding: 0.5rem;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    font-size: 11px;
+    width: 100px;
+    height: 15px;
+    background: var(--fetching);
+    border-radius: 8px;
+}
+.post-fetching .action-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+.post-fetching .action-area button {
+    outline: none;
+    border: none;
+    background: var(--fetching);
+    padding: 0.7rem 1rem;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+@media (max-width: 768px) {
+    .post-fetching {
+        width: 98%;
+        max-width: 95%;
+    }
+}
+
+/*----Posts Fetching CSS-----*/

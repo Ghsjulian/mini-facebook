@@ -42,23 +42,30 @@ const setCookie = async (res, value) => {
     return true;
 };
 
-const DeleteFile = async filepath => {
-    var file = path.join(__dirname, "../public/users/", filepath);
-    try {
-        //await fs.unlink(file);
-        await fs.unlinkSync(file);
-        return true;
-    } catch (err) {
-        console.log(err);
-        return false;
-    }
-};
-const DeleteOldImg = async filepath => {
-    try{
+const DeleteFile = async (filepath, type) => {
     let url = filepath.split("/");
     let len = url.length;
     let filename = url[len - 1];
-    let file = path.join(__dirname, "../public/post/", filename);
+    let file = path.join(__dirname, "../public/users/", filename);
+    if (filename !== type) {
+        try {
+            //await fs.unlink(file);
+            await fs.unlinkSync(file);
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    } else {
+        return;
+    }
+};
+const DeleteOldImg = async filepath => {
+    try {
+        let url = filepath.split("/");
+        let len = url.length;
+        let filename = url[len - 1];
+        let file = path.join(__dirname, "../public/post/", filename);
         await fs.unlinkSync(file);
         return true;
     } catch (err) {

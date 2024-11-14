@@ -37,9 +37,6 @@ const AddFriends = () => {
                     minifacebook: getUser().token || null
                 }
             });
-            if (!request.ok) {
-                throw new Error("Network response was not ok");
-            }
             const response = await request.json();
             btn.setAttribute("class", "");
             setAdding(false);
@@ -59,23 +56,6 @@ const AddFriends = () => {
         } finally {
             setAdding(false);
         }
-        /*
-        // Call the AddFriend function
-        await AddFriend(id);
-        if (user !== null) {
-            console.log(user);
-            // alert(JSON.stringify(user));
-            //btn.textContent = "Cancel Request"
-            // btn.classList.add("show-cancel")
-            // btn.classList.add("show-cancel")
-        }
-
-        // Update the local state to reflect the friend request status
-        setFriendRequests(prev => ({
-            ...prev,
-            [id]: "pending" // or 'added' based on your logic
-        }));
-        */
     };
 
     return (

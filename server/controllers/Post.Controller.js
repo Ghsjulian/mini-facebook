@@ -165,6 +165,32 @@ class PostController {
             });
         }
     }
+    async GetUserAllPost(req, res) {
+        const id = req.params.user_id;
+        try {
+            const posts = await PostModel.find({ poster_id: id });
+            if (posts) {
+                res.json({
+                    code: 200,
+                    posts,
+                    status: true,
+                    success: true,
+                    message : "Total "+posts.length+" Post Found"
+                });
+            } else {
+                throw new Error("No Post Found In The Server");
+            }
+        } catch (error) {
+            return res.status(404).json({
+                code: 404,
+                status: false,
+                posts: [],
+                error: true,
+                success: false,
+                message: error.message || "Server Error -403"
+            });
+        }
+    }
     async DeletePost(req, res) {
         try {
             const post = await PostModel.findOne({

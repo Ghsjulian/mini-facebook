@@ -35,11 +35,36 @@
     margin: 0 0.2rem;
 }
 .post .content {
+    width: 100%;
     margin-top: 2.3rem;
-    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    padding: 0.7rem 0;
     line-height: 1.5rem;
     color: var(--txt);
     font-weight: 900;
+}
+.content .post--img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.content p {
+    font-size: 15px;
+}
+.post .date {
+    position: absolute;
+    top: 15px;
+    right: 3px;
+    display: flex;
+    text-align: left;
+    justify-content: left;
+    padding: 0;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--logo);
 }
 .post .action-area {
     display: flex;
@@ -83,17 +108,79 @@
     margin: 0.5rem auto;
     width: 90%;
 }
-.post textarea {
+.post .error {
+    color: #cd3e00;
+    background: rgba(205, 62, 0, 0.175);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0.5rem;
+    margin: 0.3rem auto;
+    border: 1px solid #cd3e00;
+    border-radius: 5px;
+}
+.post .success {
+    color: #198f00;
+    background: rgba(0, 205, 23, 0.175);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0.5rem;
+    margin: 0.3rem auto;
+    border: 1px solid #198f00;
+    border-radius: 5px;
+}
+.post .post--area {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-style: dashed;
+    border-color: var(--txt);
+    border-width: 2px;
+    border-radius: 5px;
+}
+.post--area textarea {
     resize: none;
     width: 90%;
-    height: 100px;
+    height: 70px;
     outline: none;
-    border: 2px solid var(--logo);
-    border-radius: 8px;
+    border: none;
     margin: 0 auto;
-    padding: 1rem 0.5rem;
+    padding: 0.5rem;
     font-weight: 900;
     color: var(--txt);
+}
+.post--area .select-img {
+    width: 90%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-img img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin: 0.3rem auto;
+}
+.select-img .selected {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin: 0.3rem auto;
+}
+.select-img .close {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 30px;
+    height: 30px;
+}
+.select-img .close img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
 }
 .post .post-btn {
     margin: 0.5rem auto;
@@ -109,6 +196,7 @@
 }
 
 /* User Profile */
+
 .profile-section {
     position: relative;
     border-radius: 10px;
@@ -117,6 +205,86 @@
     max-width: 80%;
     width: 100%;
     margin: 0.5rem auto;
+}
+main .fixed-page {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 95vh;
+    background: rgba(0, 0, 0, 0.345);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.fixed-page .edit-- {
+    position: relative;
+    margin: 0.5rem auto;
+    max-width: 350px;
+    width: 280px;
+    background: var(--white);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    animation: 0.3s zoom linear;
+    border-radius: 8px;
+}
+.edit-- img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    border-radius: 50%;
+}
+.edit-- input {
+    width: 200px;
+    padding: 0.7rem 0.7rem;
+    margin: 0.5rem auto;
+    outline: none;
+    border: 1px solid var(--logo);
+    color: var(--logo);
+    border-radius: 5px;
+}
+.edit-- button {
+    width: 200px;
+    padding: 0.5rem 0.7rem;
+    margin: 0.5rem auto;
+    outline: none;
+    background: var(--logo);
+    color: var(--white);
+    border-radius: 5px;
+    border: none;
+    font-weight: 700;
+    transition: 0.3s ease-in;
+}
+.edit-- button:hover {
+    background: #015317;
+    color: var(--white);
+}
+.edit-- .error {
+    background: rgba(150, 41, 0, 0.224);
+    color: #ff4d09;
+    padding: 0.5rem.6rem;
+    margin: 0.5rem auto;
+    display: flex;
+    font-weight: 500;
+    font-size: 14px;
+}
+.edit-- .success {
+    background: rgba(1, 150, 0, 0.224);
+    color: #4deb07;
+    padding: 0.5rem.6rem;
+    margin: 0.5rem auto;
+    display: flex;
+    font-weight: 500;
+    font-size: 14px;
 }
 .full-page {
     width: 100%;
@@ -451,7 +619,7 @@
     transition: 0.5s ease-in;
 }
 .action-area .disabled-message {
-    background: #89fcf0;
+    background: #455649;
     color: var(--white);
     font-weight: 900;
     margin: 0;
@@ -538,9 +706,12 @@
 }
 @media (max-width: 768px) {
     .profile-section,
-    .post {
+    .post{
         width: 98%;
         max-width: 95%;
         margin: 1rem auto;
+    }
+    .post-fetching{
+        width: 98%;
     }
 }
