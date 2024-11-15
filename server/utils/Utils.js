@@ -5,6 +5,7 @@ const secretKey = process.env.SECRET_KEY;
 const expiresIn = process.env.EXPIRES_IN;
 const path = require("path");
 const fs = require("fs");
+const UserModel = require("../models/User.Model")
 
 const makeHash = async password => {
     try {
@@ -74,6 +75,20 @@ const DeleteOldImg = async filepath => {
     }
 };
 
+const getUser = async(id)=>{
+    try {
+      const user = await UserModel.findOne({_id:id})
+      if(user){
+          return user
+      } else {
+          throw new Error("No User Found")
+      }
+    } catch (error) {
+         
+      console.log(error.message);
+    }
+}
+
 module.exports = {
     makeHash,
     compareHashed,
@@ -81,5 +96,6 @@ module.exports = {
     decodeJWT,
     setCookie,
     DeleteFile,
-    DeleteOldImg
+    DeleteOldImg,
+    getUser
 };

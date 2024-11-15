@@ -26,6 +26,8 @@ class PostController {
             }
             const newPost = await new PostModel({
                 poster_id: req.user._id,
+                poster_name: req.user.name,
+                poster_avatar: req.user.avatar,
                 post_img: isPostImg ? data.post_img : null,
                 post_content: data.post_content
             });
@@ -151,7 +153,11 @@ class PostController {
         try {
             const post = await PostModel.find();
             if (post) {
-                res.json(post);
+                res.json({
+                    posts: post,
+                    status: true,
+                    success: true
+                });
             } else {
                 throw new Error("No Post Found In The Server");
             }
@@ -160,6 +166,7 @@ class PostController {
                 code: 404,
                 status: false,
                 error: true,
+                posts: [],
                 success: false,
                 message: error.message || "Server Error -403"
             });
@@ -175,7 +182,7 @@ class PostController {
                     posts,
                     status: true,
                     success: true,
-                    message : "Total "+posts.length+" Post Found"
+                    message: "Total " + posts.length + " Post Found"
                 });
             } else {
                 throw new Error("No Post Found In The Server");
@@ -283,7 +290,9 @@ class PostController {
                         $push: {
                             post_comments: {
                                 commenter_id: req.user._id,
-                                comment_text: comment
+                                comment_text: comment,
+                                commenter_name: req.user.name,
+                                commenter_avatar: req.user.avatar
                             }
                         }
                     }
@@ -303,6 +312,46 @@ class PostController {
                 code: 404,
                 status: false,
                 error: true,
+                success: false,
+                message: error.message || "Server Error -403"
+            });
+        }
+    }
+    async GetComments(req, res) {
+        var comments = [];
+        try {
+            const post = await PostModel.findOne({
+                _id: req.params.post_id
+            });
+            if (post) {
+                if (post.post_comments.length > 0) {
+                    post.post_comments.forEach(comment => {
+                        comments.push(comment);
+                    });
+                    return res.json({
+                        code: 200,
+                        status: true,
+                        success: true,
+                        comments
+                    });
+                } else {
+                    return res.json({
+                        code: 200,
+                        status: true,
+                        success: true,
+                        comments : [],
+                        message:"No Comment Yet"
+                    });
+                }
+            } else {
+                throw new Error("Post Not Found In The Server");
+            }
+        } catch (error) {
+            return res.status(404).json({
+                code: 404,
+                status: false,
+                error: true,
+                comments,
                 success: false,
                 message: error.message || "Server Error -403"
             });

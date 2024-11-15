@@ -6,10 +6,6 @@ import { getUser, api } from "../auth/isLogin";
 import useAddFriend from "../hooks/useAddFriend";
 
 const Profile = () => {
-    const data = {
-        name: "Ghs Julian",
-        _id: "12345"
-    };
     const { adding, result, AddFriend } = useAddFriend();
     const { user_id, user_name } = useParams();
     const [getting, setGetting] = useState(false);
