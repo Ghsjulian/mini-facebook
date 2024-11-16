@@ -108,7 +108,7 @@ const NewsFeedPost = () => {
         commentForm.current.style.display = "flex";
     };
     const closeCommentForm = () => {
-        FetchAllPost()
+        FetchAllPost();
         commentForm.current.style.display = "none";
     };
 
@@ -217,7 +217,7 @@ const NewsFeedPost = () => {
                                 {post?.post_img && (
                                     <img
                                         className="post--img"
-                                        src={post.post_img}
+                                        src={post?.post_img}
                                     />
                                 )}
                             </div>
@@ -229,21 +229,21 @@ const NewsFeedPost = () => {
                                         onClick={e => {
                                             HandleLike(post, e.target);
                                         }}
-                                        className={post._id + 2}
+                                        className={post?._id + 2}
                                         id="icon--"
                                         src={
-                                            post.post_likes.includes(
+                                            post?.post_likes.includes(
                                                 getUser().id
                                             )
                                                 ? "/icons/red-heart.png"
                                                 : "/icons/blue-heart.png"
                                         }
                                     />
-                                    <span>{post.post_likes.length}</span>
+                                    <span>{post?.post_likes.length}</span>
                                 </button>
                                 <button
                                     onClick={e => {
-                                        openCommentForm(post._id);
+                                        openCommentForm(post?._id);
                                     }}
                                     className="comment"
                                 >
@@ -251,7 +251,7 @@ const NewsFeedPost = () => {
                                         id="icon--"
                                         src="/icons/comment-one.png"
                                     />
-                                    <span>{post.post_comments.length}</span>
+                                    <span>{post?.post_comments.length}</span>
                                 </button>
                                 <button className="share">
                                     <img

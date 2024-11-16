@@ -10,6 +10,7 @@ const Profile = () => {
     const { user_id, user_name } = useParams();
     const [getting, setGetting] = useState(false);
     const [user, setUser] = useState(null);
+    const [me, setMe] = useState({});
     const navigate = useNavigate();
     const [name, setName] = useState(getUser().name);
     const [email, setEmail] = useState(getUser().email);
@@ -104,6 +105,29 @@ const Profile = () => {
             );
         } finally {
             setGetting(false);
+        }
+    };
+    const getMe = async user => {
+        try {
+            const request = await fetch(
+                `${api}/user/get-user/${getUser().id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        minifacebook: getUser().token || null
+                    }
+                }
+            );
+            const response = await request.json();
+            //  if (response.notifications.length > 0) {
+            setMe(response);
+            // }
+        } catch (error) {
+            console.error(
+                "Error in Profile.jsx Fetching User --> ",
+                error.message
+            );
         }
     };
 
@@ -201,6 +225,7 @@ const Profile = () => {
         if (getUser().id === user_id) {
             document.title = "Profile Page - " + user_name;
         }
+        getMe();
         fetchUserProfile(user_id);
         if (getting) return;
     }, [user_id, user_name]);
@@ -230,6 +255,93 @@ const Profile = () => {
                 "Error While Adding Fiend In Cliebt Side Profile --> ",
                 error.message
             );
+        }
+    };
+    const AcceptRequest = async id => {
+        try {
+            const request = await fetch(
+                `${api}/user/accept-friend-request/${id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        minifacebook: getUser().token || null
+                    }
+                }
+            );
+            const response = await request.json();
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const UnFriend = async id => {
+        try {
+            const request = await fetch(`${api}/user/unfriend/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    minifacebook: getUser().token || null
+                }
+            });
+            const response = await request.json();
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const isRequested = me => {
+        if (me?.notifications?.length > 0) {
+            let result = me?.notifications?.find(
+                obj => obj.receiver_id === getUser().id
+            );
+            if (result?.receiver_id) {
+                if (result?.receiver_id === getUser().id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    };
+    const isSentRequest = user => {
+        console.log(user);
+        if (user?.requests?.length > 0) {
+            let result = user?.requests?.find(
+                obj => obj.sender_id === getUser().id
+            );
+            if (result?.sender_id) {
+                if (result?.sender_id === getUser().id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    };
+    const isFriend = (me, target) => {
+        if (me?.friends?.length > 0) {
+            let result = me?.friends?.find(obj => obj.id === target);
+            if (result?.id) {
+                if (result?.id === target) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     };
 
@@ -354,23 +466,49 @@ const Profile = () => {
                                 </div>
                             )}
                             {/*--> If User Already Friend --> */}
-                            {user.friends?.includes(getUser().id) && (
+                            {getUser().id !== user._id &&
+                                isFriend(me, user?._id) && (
+                                    <div className="action-area">
+                                        <button className="message">
+                                            Send Message
+                                        </button>
+                                        <button
+                                            onClick={e => {
+                                                UnFriend(user._id);
+                                            }}
+                                            className="unfriend"
+                                        >
+                                            Unfriend
+                                        </button>
+                                    </div>
+                                )}
+
+                            {/*--> If User Already Requested Me <--*/}
+                            {getUser().id !== user._id && isRequested(me) && (
                                 <div className="action-area">
-                                    <button className="message">
-                                        Send Message
+                                    <button className="disabled-message">
+                                        Can't Message
                                     </button>
-                                    <button className="unfriend">
-                                        Unfriend
+                                    <button
+                                        onClick={e => {
+                                            AcceptRequest(user._id);
+                                        }}
+                                        className="accept"
+                                    >
+                                        Accept Request
                                     </button>
                                 </div>
                             )}
-                            {/*--> If Not Fruend --> */}
-                            {!user.friends?.includes(getUser().id) &&
-                                getUser().id !== user._id && (
+
+                            {/*--> If User  Not Friend --> */}
+                            {getUser().id !== user._id &&
+                                !isRequested(me) &&
+                                !isFriend(me, user._id) && (
                                     <div className="action-area">
                                         <button className="disabled-message">
                                             Can't Message
                                         </button>
+
                                         <button
                                             onClick={() => {
                                                 handleAddFriend(user._id);
@@ -392,6 +530,44 @@ const Profile = () => {
                                         </button>
                                     </div>
                                 )}
+
+                            {/*
+                                !user.friends?.includes(getUser().id) &&
+                                getUser().id !== user._id && (
+                                    <div className="action-area">
+                                        <button className="disabled-message">
+                                            Can't Message
+                                        </button>
+                                        {!isRequested(me) &&
+                                            !user.requests?.includes(
+                                                getUser().id
+                                            ) && (
+                                                <button
+                                                    onClick={() => {
+                                                        handleAddFriend(
+                                                            user._id
+                                                        );
+                                                    }}
+                                                    id={user._id}
+                                                    className="add"
+                                                >
+                                                    Add Friend
+                                                </button>
+                                            )}
+                                        {user?.requests?.includes(
+                                            getUser().id
+                                        ) && (
+                                            <button
+                                                onClick={() => {
+                                                    handleAddFriend(user._id);
+                                                }}
+                                                id={user._id}
+                                                className="cancel-request"
+                                            >
+                                                Cancel Request
+                                            </button>
+                                        )
+                                            */}
                         </div>
                     </div>
 
@@ -399,7 +575,11 @@ const Profile = () => {
                     {getUser().id === user._id && <CreatePost />}
 
                     {/* User Display Users All  Post */}
-                    {user._id && <FetchAllPost user={[user.name,user._id,user.avatar]} />}
+                    {user._id && (
+                        <FetchAllPost
+                            user={[user.name, user._id, user.avatar]}
+                        />
+                    )}
                 </>
             )}
         </>

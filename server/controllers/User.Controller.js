@@ -529,9 +529,7 @@ class USerController {
                 const update = await UserModel.findByIdAndUpdate(req.user._id, {
                     name: name ? name : isExist.name,
                     email: email ? email : isExist.email,
-                   password: new_password
-                        ? hashedPassword
-                        : isExist.password
+                    password: new_password ? hashedPassword : isExist.password
                 });
                 if (update) {
                     return res.status(200).json({
@@ -598,6 +596,19 @@ class USerController {
                             { _id: req.params.user_id },
                             { $pull: { requests: req.user._id } }
                         );
+                        await UserModel.updateOne(
+                            { _id: req.params.user_id },
+                            {
+                                $pull: {
+                                    notifications: {
+                                        sender_name: req.user.name,
+                                        sender_id: req.user._id,
+                                        receiver_id: req.params.user_id,
+                                        sender_avatar: req.user.avatar
+                                    }
+                                }
+                            }
+                        );
                         return res.json({
                             code: 200,
                             status: true,
@@ -609,6 +620,19 @@ class USerController {
                         await UserModel.updateOne(
                             { _id: req.params.user_id },
                             { $addToSet: { requests: req.user._id } }
+                        );
+                        await UserModel.updateOne(
+                            { _id: req.params.user_id },
+                            {
+                                $addToSet: {
+                                    notifications: {
+                                        sender_name: req.user.name,
+                                        sender_id: req.user._id,
+                                        receiver_id: req.params.user_id,
+                                        sender_avatar: req.user.avatar
+                                    }
+                                }
+                            }
                         );
                         return res.json({
                             code: 200,
@@ -637,30 +661,62 @@ class USerController {
     async AcceptFriendRequest(req, res) {
         try {
             if (req.user._id) {
+                const friend = await UserModel.findOne({
+                    _id: req.params.user_id
+                });
                 const user = await UserModel.findOne({
                     _id: req.user._id
                 });
                 if (user) {
-                    const friends = user.friends;
-                    if (!friends.includes(req.params.user_id)) {
-                        await UserModel.updateOne(
-                            { _id: req.user._id },
-                            { $addToSet: { friends: req.params.user_id } }
-                        );
-                        await UserModel.updateOne(
-                            { _id: req.params.user_id },
-                            { $addToSet: { friends: req.user._id } }
-                        );
-                        return res.json({
-                            code: 200,
-                            status: true,
-                            error: false,
-                            success: true,
-                            message: "Friend Request Accepted"
-                        });
-                    } else {
-                        throw new Error("You're Aleady Friend");
-                    }
+                    // For Request Accepter
+                    await UserModel.updateOne(
+                        { _id: req.user._id },
+                        {
+                            $addToSet: {
+                                friends: {
+                                    id: friend._id,
+                                    name: friend.name,
+                                    avatar: friend.avatar
+                                }
+                            }
+                        }
+                    );
+                    // For Request Sender
+                    await UserModel.updateOne(
+                        { _id: req.params.user_id },
+                        {
+                            $addToSet: {
+                                friends: {
+                                    id: req.user._id,
+                                    name: req.user.name,
+                                    avatar: req.user.avatar
+                                }
+                            }
+                        }
+                    );
+                    // Delete The Notification From Accepter
+                    await UserModel.updateOne(
+                        { _id: req.user._id },
+                        {
+                            $pull: {
+                                notifications: {sender_id:friend._id}
+                            }
+                        }
+                    );
+                    // Delete The Friend Request From Accepter
+                    await UserModel.updateOne(
+                        { _id: req.user._id },
+                        {
+                            $pull: { requests: friend._id }
+                        }
+                    );
+                    return res.json({
+                        code: 200,
+                        status: true,
+                        error: false,
+                        success: true,
+                        message: "Friend Request Accepted"
+                    });
                 } else {
                     throw new Error("No User Found In The Server");
                 }
@@ -680,30 +736,41 @@ class USerController {
     async UnFriend(req, res) {
         try {
             if (req.user._id) {
+                const friend = await UserModel.findOne({
+                    _id: req.params.user_id
+                });
                 const user = await UserModel.findOne({
                     _id: req.user._id
                 });
                 if (user) {
-                    const friends = user.friends;
-                    if (friends.includes(req.params.user_id)) {
-                        await UserModel.updateOne(
-                            { _id: req.user._id },
-                            { $pull: { friends: req.params.user_id } }
-                        );
-                        await UserModel.updateOne(
-                            { _id: req.params.user_id },
-                            { $pull: { friends: req.user._id } }
-                        );
-                        return res.json({
-                            code: 200,
-                            status: true,
-                            error: false,
-                            success: true,
-                            message: "Unfriend Successfully"
-                        });
-                    } else {
-                        throw new Error("You're Not Friend");
-                    }
+                    await UserModel.updateOne(
+                        { _id: friend._id },
+                       {$pull: {
+                                friends: {id:user._id}
+                            }}
+                       /*
+                        { $pull: { "friends.$[].user": { id: friend._id } } }
+                        */
+                    );
+                    await UserModel.updateOne(
+                        { _id: req.user._id },
+                        {
+                            $pull: {
+                                friends: {id: friend._id}
+                            }
+                        }
+                        /*
+                        { $pull: { "friends.$[].user": { id: req.user._id } } }
+                        */
+                    );
+
+                    return res.json({
+                        code: 200,
+                        status: true,
+                        error: false,
+                        success: true,
+                        message: "Unfriend Successfully"
+                    });
                 } else {
                     throw new Error("No User Found In The Server");
                 }

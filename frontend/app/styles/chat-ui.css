@@ -55,6 +55,7 @@ body {
     align-items: center;
     z-index: 9000;
     border-radius: 0 10px 0 0;
+    border-bottom: 0.1px solid var(--logo);
 }
 header .logo {
     display: flex;
@@ -70,6 +71,7 @@ header .logo img {
     width: 120px;
     height: 50px;
     object-fit: contain;
+    cursor: pointer;
 }
 header .links {
     display: flex;
@@ -78,6 +80,7 @@ header .links {
     gap: 1rem;
 }
 header .links a {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,11 +109,13 @@ header .action button #icon-- {
     padding: 2px;
 }
 header .action {
+    position: relative;
     display: none;
     padding: 0.1rem;
     gap: 0.5rem;
 }
 .action button {
+    position: relative;
     margin: 0.3rem;
     outline: none;
     border: none;
@@ -122,11 +127,111 @@ header .action {
     padding: 0.2rem;
     background: var(--ico-hover);
 }
+.action button .noti-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #c7000d;
+    color: var(--white);
+    font-weight: 700;
+}
+.action button .msg-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0b9101;
+    color: var(--white);
+    font-weight: 700;
+}
 .action button i {
     color: var(--txt);
     font-weight: 900;
     font-size: 18px;
 }
+
+.app .noti {
+    display: none;
+}
+
+.app .notification-container {
+    position: absolute;
+    display: block;
+    width: 40%;
+    height: 70%;
+    top: 8%;
+    left: 55%;
+    right: 2%;
+    background: #eef5fc;
+    z-index: 9000000;
+    transition: 1s ease-in;
+}
+.notification-container h3 {
+    text-align: center;
+    margin: 0.3rem auto;
+}
+.notification-container .container {
+    position: relative;
+    overflow-y: auto;
+    width: 100%;
+}
+.container .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.5rem 0;
+    padding: 0.5rem 0;
+    width: 100%;
+    border-bottom: 0.1px solid #cdcdce;
+}
+.flex a {
+    outline: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--logo);
+}
+.flex a .row {
+    display: flex;
+    flex-direction: column;
+}
+.flex a .row small {
+    color: var(--txt);
+    font-weight: 700;
+    font-size: 12px;
+    margin-left: 6px;
+}
+.flex a img {
+    width: 55px;
+    height: 55px;
+    padding: 2px;
+    border-radius: 50%;
+    border: 0.1px solid var(--logo);
+}
+.flex a span {
+    color: var(--logo);
+    font-weight: 700;
+    margin: 0 0.5rem;
+    font-size: 17px;
+}
+.flex button {
+    outline: none;
+    border: none;
+    background: var(--logo);
+    color: var(--white);
+    font-weight: 900;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    border-radius: 5px;
+    transition: 0.5s ease-in;
+}
+
 .app aside {
     position: absolute;
     width: 20%;
@@ -340,9 +445,9 @@ aside .search-area {
 }
 .app .mobile-nav {
     position: absolute;
-    width: 80%;
+    width: 83%;
     left: 0;
-    top: 0;
+    top: 2.8px;
     padding: 0.2rem 0.7rem;
     align-items: left !important;
     justify-content: left !important;
@@ -434,7 +539,11 @@ aside .search-area {
         left: 0;
         margin: 0 0;
     }
-
+    .app .notification-container {
+        width: 95%;
+        left: 2%;
+        right: 2%;
+    }
     .app footer {
         position: absolute;
         width: 100%;

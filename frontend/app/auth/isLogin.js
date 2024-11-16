@@ -1,5 +1,4 @@
 import useCookie from "../hooks/useCookie";
-
 export const api = import.meta.env.VITE_API_URL;
 
 export const isLogin = () => {
@@ -15,6 +14,7 @@ export const isLogin = () => {
     } else {
         return false;
     }
+    
 };
 export const getUser = () => {
     const { getCookie } = useCookie();
@@ -30,4 +30,3 @@ export const getUser = () => {
         return false;
     }
 };
-

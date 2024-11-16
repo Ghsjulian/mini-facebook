@@ -6,6 +6,14 @@ const postSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
+        poster_name: {
+            type: String,
+            required: true
+        },
+        poster_avatar: {
+            type: String,
+            required: true
+        },
         post_content: {
             type: String,
             required: true

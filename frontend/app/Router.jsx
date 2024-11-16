@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
-import AddFriends from "./pages/AddFriends"
+import AddFriends from "./pages/AddFriends";
 // Import Auth Here...
 import { isLogin } from "./auth/isLogin";
 
@@ -18,7 +18,7 @@ const MyRoutes = [
         children: [
             {
                 index: true,
-                element: <Home />
+                element: isLogin() ?<Home />:<Navigate to="/login" />
             },
             {
                 path: "/profile/:user_name/:user_id",
@@ -26,7 +26,7 @@ const MyRoutes = [
             },
             {
                 path: "/add-friend",
-                element : isLogin() ? <AddFriends /> : <Navigate to="/login" />
+                element: isLogin() ? <AddFriends /> : <Navigate to="/login" />
             }
         ]
     },

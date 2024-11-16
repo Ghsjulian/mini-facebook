@@ -2,10 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
-import {getUser,api} from "../auth/isLogin"
+import { getUser, api } from "../auth/isLogin";
 
 const Signup = () => {
-    const {setCookie} = useCookie()
+    const { setCookie } = useCookie();
     const [userName, setuserName] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -131,7 +131,7 @@ const Signup = () => {
     return (
         <div className="full-container">
             <div ref={loginContainer} className="login">
-               {/* <h2 ref={head} id="head">
+                {/* <h2 ref={head} id="head">
                     Please Login Now
                 </h2>*/}
                 <img src="/favicons/mini-facebook.png" />
@@ -175,7 +175,7 @@ const Signup = () => {
                 <button ref={loginBtn} onClick={LoginNow} id="login-btn">
                     <div ref={loader} className="loader"></div>
                     <span ref={txtRef} id="txt">
-                        Login Now
+                        Signup Now
                     </span>
                 </button>
                 <p>

@@ -1,8 +1,12 @@
-import { getUser ,api} from "../auth/isLogin";
+import { getUser, api } from "../auth/isLogin";
+import useCookie from "../hooks/useCookie";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const useLogout = () => {
+    const { setCookie } = useCookie();
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const Logout = async () => {
         try {
             setLoading(true);
@@ -14,8 +18,12 @@ const useLogout = () => {
                 }
             });
             const response = await request.json();
-            console.log(response);
             setLoading(false);
+            if (response.success) {
+                setCookie("minifacebook","")
+                window.location.reload();
+                navigate("/login");
+            }
         } catch (error) {
             console.log(error);
             setLoading(false);
@@ -25,4 +33,4 @@ const useLogout = () => {
     };
     return { Logout, loading };
 };
-export default useLogout
+export default useLogout;

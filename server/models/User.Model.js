@@ -13,16 +13,26 @@ const userSchema = new mongoose.Schema(
             unique: true
         },
         avatar: {
-            type: String,
+            type: String
         },
         cover: {
-            type: String,
+            type: String
         },
         password: {
             type: String,
             required: true
         },
-        requests : {
+        notifications: {
+            type: [
+                {
+                    sender_name: String,
+                    sender_id: String,
+                    receiver_id: String,
+                    sender_avatar: String
+                }
+            ]
+        },
+        requests: {
             type: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
@@ -31,12 +41,11 @@ const userSchema = new mongoose.Schema(
             ]
         },
         friends: {
-            type: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User"
-                }
-            ]
+            type: [{
+                id: String,
+                                    name: String,
+                                    avatar: String 
+            }]
         },
         token: {
             type: String

@@ -11,15 +11,58 @@ const AddFriends = () => {
     // Local state to track friend request status
     const [friendRequests, setFriendRequests] = useState({});
     const [adding, setAdding] = useState(false);
+    const [me, setMe] = useState(false);
+
+    const getMe = async user => {
+        try {
+            const request = await fetch(
+                `${api}/user/get-user/${getUser().id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        minifacebook: getUser().token || null
+                    }
+                }
+            );
+            const response = await request.json();
+            if (response.notifications.length > 0) {
+                setMe(response.notifications);
+            }
+        } catch (error) {
+            console.error(
+                "Error in Profile.jsx Fetching User --> ",
+                error.message
+            );
+        }
+    };
 
     useEffect(() => {
         FindPeoples();
+        getMe();
         if (isFetching) return;
     }, []);
 
     const isRequested = people => {
         if (people.requests.includes(getUser().id)) {
             return true;
+        } else {
+            return false;
+        }
+    };
+    const isRequestedMe = me => {
+        if (me.length > 0) {
+            let result = me.find(obj => obj.receiver_id === getUser().id);
+            if (result?.receiver_id) {
+                if (result?.receiver_id === getUser().id) {
+                    console.log(result);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -75,14 +118,16 @@ const AddFriends = () => {
                             >
                                 <img
                                     src={
-                                        people.avtar
-                                            ? people.avtar
-                                            : "icons/man.png"
+                                        people.avatar
+                                            ? people.avatar
+                                            : "/icons/man.png"
                                     }
                                     alt={people.name}
                                 />
                                 <span>{people.name}</span>
                             </NavLink>
+
+                            {/*
                             <button
                                 onClick={e => {
                                     e.preventDefault();
@@ -97,6 +142,36 @@ const AddFriends = () => {
                                     ? "Cancel Request"
                                     : "Add Friend"}
                             </button>
+                            */}
+                            {!isRequestedMe(me) && !people.is_requested && (
+                                <button
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        handleAddFriend(people, people._id);
+                                    }}
+                                    id={people._id}
+                                    className="add"
+                                >
+                                    Add Friend
+                                </button>
+                            )}
+                           {people.is_requested && (
+                                <button
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        handleAddFriend(people, people._id);
+                                    }}
+                                    id={people._id}
+                                    className="show-cancel"
+                                >
+                                    Cancel Request
+                                </button>
+                            )}
+                            {isRequestedMe(me) && (
+                                <button className="accept">
+                                    Accept Request
+                                </button>
+                            )}
                         </div>
                     );
                 })}
