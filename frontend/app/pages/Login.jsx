@@ -2,11 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
-import {getUser,api} from "../auth/isLogin"
-// import { setCookie } from "../auth/Cookies";
-//import { useAuth } from "../auth/Auth";
-// import { useSocket } from "../auth/SocketProvider";
-//import { useSocket } from "../socket/SocketProvider";
+import { isLogin, getUser, api } from "../auth/isLogin";
 
 const Login = () => {
     const { setCookie } = useCookie();
@@ -116,6 +112,7 @@ const Login = () => {
             SendToServer(email.trim(), password.trim());
         }
     };
+    
 
     return (
         <div className="full-container">

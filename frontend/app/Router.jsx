@@ -10,7 +10,41 @@ import Profile from "./pages/Profile";
 import AddFriends from "./pages/AddFriends";
 // Import Auth Here...
 import { isLogin } from "./auth/isLogin";
+import IsLogged from "./auth/isLoggedIn";
 
+const MyRoutes = [
+    {
+        path: "/",
+        element: <Layouts />,
+        children: [
+            {
+                index: true,
+                element: <Home />
+            },
+            {
+                path: "/profile/:user_name/:user_id",
+                element: <Profile />
+            },
+            {
+                path: "/add-friend",
+                element: <AddFriends />
+            }
+        ]
+    },
+    {
+        path: "/login",
+        element: !isLogin() ? <Login /> : <Navigate to="/" />
+    },
+    {
+        path: "/signup",
+        element: !isLogin()?<Signup />:<Navigate to="/" />
+    },
+    {
+        path: "*",
+        element: <NotFound />
+    }
+];
+/*
 const MyRoutes = [
     {
         path: "/",
@@ -43,5 +77,5 @@ const MyRoutes = [
         element: <NotFound />
     }
 ];
-
+*/
 export default MyRoutes;

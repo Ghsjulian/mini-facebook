@@ -4,8 +4,10 @@ import FetchAllPost from "../components/FetchAllPost";
 import CreatePost from "../components/CreatePost";
 import { getUser, api } from "../auth/isLogin";
 import useAddFriend from "../hooks/useAddFriend";
+import { useAuth } from "../contexts/useUserContext";
 
 const Profile = () => {
+    const { authUser } = useAuth();
     const { adding, result, AddFriend } = useAddFriend();
     const { user_id, user_name } = useParams();
     const [getting, setGetting] = useState(false);
@@ -270,7 +272,7 @@ const Profile = () => {
                 }
             );
             const response = await request.json();
-            console.log(response);
+            getMe();
         } catch (error) {
             console.log(error);
         }
@@ -285,7 +287,7 @@ const Profile = () => {
                 }
             });
             const response = await request.json();
-            console.log(response);
+            getMe();
         } catch (error) {
             console.log(error);
         }
@@ -344,7 +346,6 @@ const Profile = () => {
             return false;
         }
     };
-
     return (
         <>
             {!getting && user?._id && user?._id !== null && (
@@ -530,44 +531,6 @@ const Profile = () => {
                                         </button>
                                     </div>
                                 )}
-
-                            {/*
-                                !user.friends?.includes(getUser().id) &&
-                                getUser().id !== user._id && (
-                                    <div className="action-area">
-                                        <button className="disabled-message">
-                                            Can't Message
-                                        </button>
-                                        {!isRequested(me) &&
-                                            !user.requests?.includes(
-                                                getUser().id
-                                            ) && (
-                                                <button
-                                                    onClick={() => {
-                                                        handleAddFriend(
-                                                            user._id
-                                                        );
-                                                    }}
-                                                    id={user._id}
-                                                    className="add"
-                                                >
-                                                    Add Friend
-                                                </button>
-                                            )}
-                                        {user?.requests?.includes(
-                                            getUser().id
-                                        ) && (
-                                            <button
-                                                onClick={() => {
-                                                    handleAddFriend(user._id);
-                                                }}
-                                                id={user._id}
-                                                className="cancel-request"
-                                            >
-                                                Cancel Request
-                                            </button>
-                                        )
-                                            */}
                         </div>
                     </div>
 

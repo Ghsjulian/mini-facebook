@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
@@ -12,15 +12,40 @@ import "../styles/vendor/remixicon/remixicon.css";
 import "../styles/chat-ui.css";
 import "../styles/home.css";
 import "../styles/fetching.css";
+import { useAuth } from "../contexts/useUserContext";
 
 const Layouts = () => {
+    const {isLogin} = useAuth()
+    
     return (
-        <div class="app">
-            <Header />
-            <main><Outlet/></main>
-            {/* <Footer />*/}
-        </div>
+        <>
+         
+                <div class="app">
+                    <Header />
+                    <main>
+                        <Outlet />
+                    </main>
+                    {/* <Footer />*/}
+                </div>
+        </>
     );
+    /*
+    return (
+        <>
+            {isLogin ? (
+                <div class="app">
+                    <Header />
+                    <main>
+                        <Outlet />
+                    </main>
+                    {/* <Footer />
+                </div>
+            ) : (
+                <Navigate to="/login" />
+            )}
+        </>
+    );
+    */
 };
 
 export default Layouts;
