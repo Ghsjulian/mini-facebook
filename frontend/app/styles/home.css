@@ -80,7 +80,7 @@
     justify-content: left;
     text-align: justify;
     padding: 0.5rem;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     border-bottom: 0.1px solid #dee0e2;
 }
 .comments .row .user {
@@ -325,8 +325,8 @@ button {
 }
 .select-img .selected {
     width: 100%;
-    height: 200px;
-    object-fit: contain;
+    height: 180px;
+    object-fit: cover;
     margin: 0.3rem auto;
 }
 .select-img .close {
@@ -609,7 +609,6 @@ main .fixed-page {
     padding: 0.5rem 0;
     width: 100%;
     height: auto;
-    padding: 0.5rem;
     margin-bottom: 0.5rem;
 }
 .profile-head .error-profile {
@@ -643,7 +642,7 @@ main .fixed-page {
 .cover img {
     width: 100%;
     height: 130px;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: 5px;
 }
 .cover .pencil {
@@ -681,7 +680,7 @@ main .fixed-page {
     height: 150px;
     padding: 2px;
     border-radius: 50%;
-    object-fit: contain;
+    object-fit: cover;
 }
 .profile-pic .pencil {
     position: absolute;
@@ -851,7 +850,6 @@ main .fixed-page {
     border-radius: 5px;
     transition: 0.5s ease-in;
 }
-
 
 .flex .accept {
     background: #097b01;

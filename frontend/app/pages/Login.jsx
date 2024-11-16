@@ -3,8 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
 import { isLogin, getUser, api } from "../auth/isLogin";
+import {useAuth} from "../contexts/useUserContext"
+
+
 
 const Login = () => {
+    const {login} = useAuth()
     const { setCookie } = useCookie();
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -62,7 +66,9 @@ const Login = () => {
                 txtRef.current.textContent = "Login Success";
                 showMessage(response.message, true);
                 loader.current.classList.remove("load");
+               login()
                 navigate("/");
+                window.location.reload()
             } else {
                 txtRef.current.textContent = "Login Now";
                 showMessage(response.message, false);

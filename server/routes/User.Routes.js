@@ -33,6 +33,7 @@ router.get(
     isLogin,
     USerController.AcceptFriendRequest
 );
+router.get("/get-all-friends", isLogin, USerController.AllFriends);
 router.get("/unfriend/:user_id", isLogin, USerController.UnFriend);
 
 module.exports = router;

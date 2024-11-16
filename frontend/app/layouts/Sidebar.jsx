@@ -1,10 +1,41 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { api, getUser } from "../auth/isLogin";
 
-const Sidebar = () => {
+const Sidebar = ({sidebar}) => {
+    const [friends, setFriends] = useState([]);
+    const [isLoading, setLoading] = useState(false);
+
+    const fetchAllFriends = async () => {
+        try {
+            setLoading(true);
+            const request = await fetch(`${api}/user/get-all-friends`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    minifacebook: getUser().token || null
+                }
+            });
+            const response = await request.json();
+            setLoading(false);
+            //console.log("Friends---> ", response);
+            setFriends(response);
+        } catch (error) {
+            setLoading(false);
+            console.log(
+                "Error While Fetching Notification Client Side --> ",
+                error.message
+            );
+        }
+    };
+    useEffect(() => {
+        fetchAllFriends();
+        if (isLoading) return;
+    }, []);
+
     return (
         <>
-            <h3>Your Friends</h3>
+            <h3>Your Friends ({!isLoading && friends?.length})</h3>
             <div className="search-area">
                 <input type="text" placeholder="Search..." />
                 <button>
@@ -12,6 +43,42 @@ const Sidebar = () => {
                 </button>
             </div>
             <div className="links">
+                {!isLoading &&
+                    friends?.length > 0 &&
+                    friends?.map((friend, index) => {
+                        return (
+                            <div className="flex-friend">
+                                <NavLink onClick={sidebar}
+                                    key={friend?.id}
+                                    to={`/profile/${friend.name}/${friend.id}`}
+                                >
+                                    <div className="active-circle">
+                                        <img src={friend?.avatar} />
+                                        <div className="active-user"></div>
+                                    </div>
+                                    <span>{friend?.name}</span>
+                                </NavLink>
+                                <button className="send-msg">
+                                    <img src="/icons/chat.png" />
+                                </button>
+                            </div>
+                        );
+                    })}
+
+                <div className="flex-friend">
+                    <NavLink to="/">
+                        <div className="offline-circle">
+                            <img src="/icons/girl.png" />
+                            <div className="offline-user"></div>
+                        </div>
+                        <span>Sweata Sharma</span>
+                    </NavLink>
+                    <button className="send-msg">
+                        <img src="/icons/chat.png" />
+                    </button>
+                </div>
+
+                {/*
                 <NavLink to="/login">
                     <img src="images/girl.png" />
                     <span>Login</span>
@@ -100,6 +167,8 @@ const Sidebar = () => {
                     <img src="images/girl.png" />
                     <span>Ghs Julian</span>
                 </NavLink>
+                
+                */}
             </div>
         </>
     );

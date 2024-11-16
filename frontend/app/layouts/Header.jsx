@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { api, getUser } from "../auth/isLogin";
 import useLogout from "../hooks/useLogout";
 
 const Header = () => {
+    const location = useLocation();
+    const [path, setPath] = useState("");
     const { Logout, loading } = useLogout();
     const navigate = useNavigate();
     const sideRef = useRef(null);
@@ -43,8 +45,8 @@ const Header = () => {
             );
             const response = await request.json();
             setLoading(false);
-            if (response.notifications) {
-                setNotifications(response.notifications);
+            if (response?.notifications) {
+                setNotifications(response?.notifications);
             }
         } catch (error) {
             setLoading(false);
@@ -54,10 +56,31 @@ const Header = () => {
             );
         }
     };
+  
+    const AcceptRequest = async id => {
+        try {
+            const request = await fetch(
+                `${api}/user/accept-friend-request/${id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        minifacebook: getUser().token || null
+                    }
+                }
+            );
+            const response = await request.json();
+            fetchNotification();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
+        setPath(location.pathname);
         fetchNotification();
         if (isLoading) return;
-    }, [getUser]);
+    }, [getUser, path]);
 
     return (
         <>
@@ -67,27 +90,21 @@ const Header = () => {
                         onClick={goHome}
                         src="/favicons/mini-facebook-header.png"
                     />
-                    {/* <h3>Chat-App</h3>*/}
                 </div>
                 <div ref={settingRef} id="nav" className="links">
                     <NavLink to="/">
-                        {/*<i className="bi bi-house"></i>*/}
                         <img id="icon--" src="/icons/home.png" />
                     </NavLink>
                     <NavLink to={`/profile/${getUser().name}/${getUser().id}`}>
-                        {/*<i className="bi bi-person"></i>*/}
                         <img id="icon--" src="/icons/profile.png" />
                     </NavLink>
                     <NavLink to="/add-friend">
-                        {/*<i className="bi bi-people"></i>*/}
                         <img id="icon--" src="/icons/peoples.png" />
                     </NavLink>
                     <NavLink to="#" onClick={OpenSidebar}>
-                        {/*<i className="bi bi-chat"></i>*/}
                         <img id="icon--" src="/icons/friends.png" />
                     </NavLink>
                     <NavLink to="#">
-                        {/*<i className="bi bi-box-arrow-right"></i>*/}
                         <img id="icon--" src="/icons/setting-2.png" />
                     </NavLink>
                     <NavLink
@@ -109,7 +126,7 @@ const Header = () => {
                             </span>
                         )}
                     </button>
-                    <button>
+                    <button onClick={OpenSidebar}>
                         <img id="icon--" src="/icons/chat.png" />
                         <span className="msg-count">5</span>
                     </button>
@@ -129,7 +146,7 @@ const Header = () => {
             </header>
 
             <aside ref={sideRef}>
-                <Sidebar />
+                <Sidebar sidebar={OpenSidebar}/>
             </aside>
             <div
                 onClick={OpenSidebar}
@@ -139,8 +156,8 @@ const Header = () => {
                 <h3>Notifications</h3>
                 <div className="container">
                     {!isLoading &&
-                        notifications.length > 0 &&
-                        notifications.map((notification, index) => {
+                        notifications?.length > 0 &&
+                        notifications?.map((notification, index) => {
                             return (
                                 <div
                                     key={index + 123}
@@ -169,7 +186,15 @@ const Header = () => {
                                             </small>
                                         </div>
                                     </NavLink>
-                                    <button>Accept</button>
+                                    <button
+                                        onClick={() => {
+                                            AcceptRequest(
+                                                notification?.sender_id
+                                            );
+                                        }}
+                                    >
+                                        Accept Request
+                                    </button>
                                 </div>
                             );
                         })}

@@ -249,8 +249,10 @@ aside h3 {
     margin: 0.5rem 0;
     text-align: justify;
     padding-bottom: 0.8rem;
+    font-size: 20px;
+    font-weight: 700;
     color: var(--logo);
-    border-bottom: 2px solid var(--txt);
+    border-bottom: 1px solid #526f70;
 }
 aside .links {
     height: 95%;
@@ -264,26 +266,85 @@ aside .links {
     margin: 0.7rem 0;
     padding-bottom: 6.5rem;
 }
+aside .flex-friend {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid var(--ico-hover);
+}
+.flex-friend button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+.flex-friend button img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+aside .links .flex-friend a .active-circle {
+    position: relative;
+    border: 1px solid #0fe000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.active-circle .active-user {
+    position: absolute;
+    top: -2px;
+    right: 1px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #0fe000;
+    z-index: 900;
+}
+
+aside .links .flex-friend a .offline-circle {
+    position: relative;
+    border: 1px solid #526f70;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.offline-circle .offline-user {
+    position: absolute;
+    top: -2px;
+    right: 1px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #526f70;
+    z-index: 900;
+}
+
 aside .links a {
     text-decoration: none;
-    padding: 0.5rem 0;
-    margin: 0.5rem 0;
+    padding: 0.5rem 0.2rem;
+    margin: 0.3rem 0;
     color: var(--txt);
     cursor: pointer;
-    font-weight: 700;
-    font-size: 12px;
+    font-weight: 800;
+    font-size: 13px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: left;
-    background: var(--ico-hover);
 }
 aside .links a img {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     object-fit: cover;
     border-radius: 50%;
-    margin-right: 0.5rem;
+    padding: 2px;
 }
 .app main {
     position: relative;
@@ -389,11 +450,17 @@ aside .search-area {
     margin: 0 0.5rem;
 }
 
+.search-area button i {
+    color: var(--logo);
+    font-weight: 900;
+    font-size: 18px;
+}
+
 .search-area input {
     width: 100%;
     height: 30px;
     outline: none;
-    padding: 0.5rem 0.7rem;
+    padding: 0.2rem 0.7rem;
     border: none;
     word-break: wrap;
     background: transparent;
@@ -463,7 +530,7 @@ aside .search-area {
 }
 .app .overly-active {
     position: absolute;
-    width: 40%;
+    width: 30%;
     height: 100%;
     top: 0;
     right: 0;
@@ -528,7 +595,7 @@ aside .search-area {
     }
     .app .mobile-menu {
         display: block;
-        width: 60%;
+        width: 70%;
         z-index: 90000;
         transition: 0.5s ease-in;
         animation: 0.3s sidebar linear;

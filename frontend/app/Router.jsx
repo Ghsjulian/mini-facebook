@@ -37,7 +37,7 @@ const MyRoutes = [
     },
     {
         path: "/signup",
-        element: !isLogin()?<Signup />:<Navigate to="/" />
+        element: !isLogin() ? <Signup /> : <Navigate to="/" />
     },
     {
         path: "*",

@@ -699,7 +699,7 @@ class USerController {
                         { _id: req.user._id },
                         {
                             $pull: {
-                                notifications: {sender_id:friend._id}
+                                notifications: { sender_id: friend._id }
                             }
                         }
                     );
@@ -745,10 +745,12 @@ class USerController {
                 if (user) {
                     await UserModel.updateOne(
                         { _id: friend._id },
-                       {$pull: {
-                                friends: {id:user._id}
-                            }}
-                       /*
+                        {
+                            $pull: {
+                                friends: { id: user._id }
+                            }
+                        }
+                        /*
                         { $pull: { "friends.$[].user": { id: friend._id } } }
                         */
                     );
@@ -756,7 +758,7 @@ class USerController {
                         { _id: req.user._id },
                         {
                             $pull: {
-                                friends: {id: friend._id}
+                                friends: { id: friend._id }
                             }
                         }
                         /*
@@ -784,6 +786,33 @@ class USerController {
                 error: true,
                 success: false,
                 message: error.message || "Something Went Worng"
+            });
+        }
+    }
+
+    async AllFriends(req, res) {
+        try {
+            const user = await UserModel.findOne({ _id: req.user._id });
+            if (user) {
+                if (user.friends.length > 0) {
+                    res.json(user.friends);
+                } else {
+                    throw new Error("No Friends Found ");
+                }
+            } else {
+                throw new Error("No User Exist");
+            }
+        } catch (error) {
+            console.log(
+                "Error While Fetching All Friends In User.Controller->AllFriends"
+            );
+            console.log(error.message);
+            return res.json({
+                error: true,
+                success: false,
+                status: false,
+                code: 505,
+                message: error.message || "Internal Server Error - 505"
             });
         }
     }

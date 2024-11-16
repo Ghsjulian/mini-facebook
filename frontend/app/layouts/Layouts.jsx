@@ -15,21 +15,22 @@ import "../styles/fetching.css";
 import { useAuth } from "../contexts/useUserContext";
 
 const Layouts = () => {
-    const {isLogin} = useAuth()
-    
+    const { isLogin } = useAuth();
+
+    /*
     return (
         <>
-         
-                <div class="app">
-                    <Header />
-                    <main>
-                        <Outlet />
-                    </main>
-                    {/* <Footer />*/}
-                </div>
+            <div class="app">
+                <Header />
+                <main>
+                    <Outlet />
+                </main>
+            </div>
         </>
     );
-    /*
+*/
+    
+
     return (
         <>
             {isLogin ? (
@@ -38,14 +39,14 @@ const Layouts = () => {
                     <main>
                         <Outlet />
                     </main>
-                    {/* <Footer />
+                    {/* <Footer />*/}
                 </div>
             ) : (
                 <Navigate to="/login" />
             )}
         </>
     );
-    */
+    
 };
 
 export default Layouts;
