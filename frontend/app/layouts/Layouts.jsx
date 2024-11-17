@@ -1,4 +1,5 @@
-import { Outlet, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
@@ -17,6 +18,7 @@ import { useAuth } from "../contexts/useUserContext";
 const Layouts = () => {
     const { isLogin } = useAuth();
 
+    
     /*
     return (
         <>
@@ -29,7 +31,6 @@ const Layouts = () => {
         </>
     );
 */
-    
 
     return (
         <>
@@ -39,14 +40,13 @@ const Layouts = () => {
                     <main>
                         <Outlet />
                     </main>
-                    {/* <Footer />*/}
+                    {/* <Footer /> */}
                 </div>
             ) : (
                 <Navigate to="/login" />
             )}
         </>
     );
-    
 };
 
 export default Layouts;

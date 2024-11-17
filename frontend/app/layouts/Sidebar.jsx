@@ -47,9 +47,8 @@ const Sidebar = ({sidebar}) => {
                     friends?.length > 0 &&
                     friends?.map((friend, index) => {
                         return (
-                            <div className="flex-friend">
+                            <div key={friend?.id} className="flex-friend">
                                 <NavLink onClick={sidebar}
-                                    key={friend?.id}
                                     to={`/profile/${friend.name}/${friend.id}`}
                                 >
                                     <div className="active-circle">

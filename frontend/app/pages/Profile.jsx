@@ -4,6 +4,7 @@ import FetchAllPost from "../components/FetchAllPost";
 import CreatePost from "../components/CreatePost";
 import { getUser, api } from "../auth/isLogin";
 import useAddFriend from "../hooks/useAddFriend";
+import { getDate } from "../hooks/useDate";
 import { useAuth } from "../contexts/useUserContext";
 
 const Profile = () => {
@@ -190,6 +191,12 @@ const Profile = () => {
             current_password: currentPassword ? currentPassword : null,
             new_password: newPassword ? newPassword : null
         };
+        
+        /*
+        if (!name || !email || !currentPassword || !newPassword) {
+            showMessage(false, "All Fields Are Required");
+        }
+        */
         try {
             setIsLoading(true);
             const response = await fetch(`${api}/user/edit-personal-info`, {
@@ -222,6 +229,7 @@ const Profile = () => {
             );
             showMessage(false, error.message);
         }
+        
     };
     useEffect(() => {
         if (getUser().id === user_id) {
@@ -445,7 +453,7 @@ const Profile = () => {
                         <div className="name-section">
                             <h3>{user.name}</h3>
                             <h5>{user.email}</h5>
-                            <h6>Joined Since - 25 January 2024</h6>
+                            <h6>Joined Since - {getDate(user.createdAt)}</h6>
 
                             {/*--> User Edit Profile Action --> */}
                             {getUser().id === user._id && (

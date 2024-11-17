@@ -56,7 +56,7 @@ const Header = () => {
             );
         }
     };
-  
+
     const AcceptRequest = async id => {
         try {
             const request = await fetch(
@@ -101,12 +101,30 @@ const Header = () => {
                     <NavLink to="/add-friend">
                         <img id="icon--" src="/icons/peoples.png" />
                     </NavLink>
+                    {/*
                     <NavLink to="#" onClick={OpenSidebar}>
                         <img id="icon--" src="/icons/friends.png" />
                     </NavLink>
+                    */}
                     <NavLink to="#">
                         <img id="icon--" src="/icons/setting-2.png" />
                     </NavLink>
+
+                    {/* Action Buttons */}
+                    <NavLink id="desk-noti" onClick={openNotification}>
+                        <img id="icon--" src="/icons/bell.png" />
+                        {notifications.length !== 0 && (
+                            <span className="noti-count">
+                                {notifications.length}
+                            </span>
+                        )}
+                    </NavLink>
+                    <NavLink id="desk-msg">
+                        <img id="icon--" src="/icons/chat.png" />
+                        <span className="msg-count">5</span>
+                    </NavLink>
+                    {/* Action Buttons */}
+
                     <NavLink
                         to="#"
                         onClick={e => {
@@ -146,7 +164,7 @@ const Header = () => {
             </header>
 
             <aside ref={sideRef}>
-                <Sidebar sidebar={OpenSidebar}/>
+                <Sidebar sidebar={OpenSidebar} />
             </aside>
             <div
                 onClick={OpenSidebar}

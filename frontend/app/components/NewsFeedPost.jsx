@@ -4,6 +4,7 @@ import { getUser, api } from "../auth/isLogin";
 import PostFetching from "../skeletons/PostFetching";
 import useLike from "../hooks/useLike";
 import useComment from "../hooks/useComment";
+import { getDate } from "../hooks/useDate";
 import FetchComments from "./FetchComments";
 
 const NewsFeedPost = () => {
@@ -221,7 +222,7 @@ const NewsFeedPost = () => {
                                     />
                                 )}
                             </div>
-                            <div class="date">23 January 2024 / 0:50 PM</div>
+                            <div class="date">{getDate(post?.createdAt)}</div>
 
                             <div className="action-area">
                                 <button className="love">

@@ -11,7 +11,14 @@ import { AuthProvider } from "./contexts/useUserContext";
 
 const router = createBrowserRouter(MyRoutes);
 const App = () => {
-  return <AuthProvider><RouterProvider router={router} /></AuthProvider>
+    return (
+        <AuthProvider>
+            <RouterProvider
+                
+                router={router}
+            />
+        </AuthProvider>
+    );
 };
 
 export default App;
