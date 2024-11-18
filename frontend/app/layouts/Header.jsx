@@ -3,12 +3,10 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { api, getUser } from "../auth/isLogin";
 import useLogout from "../hooks/useLogout";
-import {useSocketContext} from "../contexts/SocketContext"
-
-
+import { useSocketContext } from "../contexts/SocketContext";
 
 const Header = () => {
-    const {socket, activeUsers} = useSocketContext()
+    const { socket, activeUsers } = useSocketContext();
     const location = useLocation();
     const [path, setPath] = useState("");
     const { Logout, loading } = useLogout();

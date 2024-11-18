@@ -13,9 +13,22 @@ const DB = process.env.SERVER_DB || "mini-facebook";
 const URI = process.env.SERVER_URI || "mongodb://localhost:27017/";
 
 
-// Defined Some Middlewares 
+// Defined Some Middlewares
+/*
 const publicPath = path.join(__dirname);
 app.use(express.static(publicPath + "/public/"));
+*/
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Define the index route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
@@ -32,12 +45,7 @@ app.use("/api/message", MessageRouter)
 
 
 
-// Setup Home index Routes 
-app.get("/",(req,res)=>{
-    res.json({
-        message : "this is home routes"
-    })
-})
+
 
 // Listening The Server
 mongoose

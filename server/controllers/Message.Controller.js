@@ -6,6 +6,7 @@ const UserModel = require("../models/User.Model");
 const MessageModel = require("../models/Message.Model");
 const ConversationModel = require("../models/Conversation.Model");
 const Utils = require("../utils/Utils");
+const { IO, users, getSocketID } = require("../sockets/socket");
 const api = process.env.API;
 
 class MessageController {
@@ -29,8 +30,8 @@ class MessageController {
                     const newMessage = new MessageModel({
                         sender_id,
                         receiver_id,
-                        sender_avatar :sender.avatar,
-                        receiver_avatar :receiver.avatar ,
+                        sender_avatar: sender.avatar,
+                        receiver_avatar: receiver.avatar,
                         message
                     });
                     if (newMessage) {
@@ -39,13 +40,17 @@ class MessageController {
                             conversation.save(),
                             newMessage.save()
                         ]);
-                        res.status(201).json({
-                            code: 201,
-                            success: true,
-                            error: false,
-                            status: true,
-                            message: "Message Sent"
-                        });
+                        /*--> For Get All Messages  <--*/
+                        const socket_id = users[receiver_id]?.sock_id
+                        console.log("Controller---> ", socket_id);
+                        if (socket_id) {
+                            // io.to(<socket_id>).emit() used to send events to specific client
+                            IO.to(socket_id).emit(
+                                "new_message",
+                                newMessage
+                            );
+                        }
+                        res.status(200).json(newMessage);
                     } else {
                         throw new Error("Failed To Send Message");
                     }
@@ -67,14 +72,14 @@ class MessageController {
     }
     async GetMessages(req, res) {
         try {
-            const  receiver_id  = req.params.receiver_id;
+            const receiver_id = req.params.receiver_id;
             const sender_id = req.user._id;
 
             const conversation = await ConversationModel.findOne({
                 participants: { $all: [sender_id, receiver_id] }
             }).populate("messages");
-            
-            if (!conversation){
+
+            if (!conversation) {
                 return res.status(200).json([]);
             }
             const messages = conversation.messages;

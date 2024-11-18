@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { getUser } from "../auth/isLogin";
+import { useAuth } from "../contexts/useUserContext";
+import { useMessage } from "../contexts/MessageContext";
 
 const Chats = ({ chats }) => {
+    const { messages, setMessages, addMessage } = useMessage(); // Use the message context
     useEffect(() => {
         const container = document.querySelector(".chat--box");
-        if (chats?.length > 0) {
-             container.scrollTop = container.scrollHeight;
+        if (messages?.length > 0) {
+            container.scrollTop = container.scrollHeight;
         }
     }, []);
 
     return (
         <>
-            {chats?.length > 0 &&
-                chats?.map((message, index) => {
+            {messages?.length > 0 &&
+                messages?.map((message, index) => {
                     return (
                         <div
                             key={index + "123"}
@@ -33,6 +36,7 @@ const Chats = ({ chats }) => {
                         </div>
                     );
                 })}
+            {/*
             <div className="chat right">
                 <img src="/icons/girl.png" />
                 <p>This is message</p>
@@ -63,6 +67,7 @@ const Chats = ({ chats }) => {
                 <p>This is message</p>
                 <span>12:12PM</span>
             </div>
+            */}
         </>
     );
 };

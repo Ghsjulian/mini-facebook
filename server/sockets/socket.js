@@ -8,6 +8,14 @@ const Utils = require("../utils/Utils");
 
 const users = {};
 
+const getSocketID = id => {
+    if (users?.id) {
+        console.log("socket.js --> ",users[id]);
+        return users[id].sock_id;
+    }
+    return;
+};
+
 const IO = new Server(server, {
     cors: {
         origin: ["http://localhost:5000"],
@@ -53,4 +61,4 @@ IO.on("connection", async socket => {
 });
 
 // Export All
-module.exports = { app, server, IO };
+module.exports = { app, server, IO,users, getSocketID };

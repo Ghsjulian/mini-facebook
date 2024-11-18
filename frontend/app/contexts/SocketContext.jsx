@@ -3,6 +3,7 @@ import { getUser } from "../auth/isLogin";
 import io from "socket.io-client";
 
 const SocketContext = createContext();
+const sock_url = import.meta.env.VITE_SOCK_URL;
 
 export const SocketContextProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
@@ -10,7 +11,7 @@ export const SocketContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (getUser().id) {
-            const socket = io("http://localhost:3000", {
+            const socket = io(sock_url, {
                 query: {
                     user_id: getUser().id
                 }
@@ -19,6 +20,7 @@ export const SocketContextProvider = ({ children }) => {
             socket.on("active_users", users => {
                 setActiveUsers(users);
             });
+
             return () => socket.close();
         } else {
             if (socket) {
