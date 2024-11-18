@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import {
+    NavLink,
+    
+    useLocation,
+    useNavigate
+} from "react-router-dom";
 import { api, getUser } from "../auth/isLogin";
 
-const Sidebar = ({sidebar}) => {
+const Sidebar = ({ sidebar }) => {
     const [friends, setFriends] = useState([]);
     const [isLoading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
     const fetchAllFriends = async () => {
         try {
             setLoading(true);
@@ -48,7 +53,8 @@ const Sidebar = ({sidebar}) => {
                     friends?.map((friend, index) => {
                         return (
                             <div key={friend?.id} className="flex-friend">
-                                <NavLink onClick={sidebar}
+                                <NavLink
+                                    onClick={sidebar}
                                     to={`/profile/${friend.name}/${friend.id}`}
                                 >
                                     <div className="active-circle">
@@ -57,7 +63,14 @@ const Sidebar = ({sidebar}) => {
                                     </div>
                                     <span>{friend?.name}</span>
                                 </NavLink>
-                                <button className="send-msg">
+                                <button
+                                    onClick={() => {
+                                        navigate(
+                                            `/chat-box/${friend?.name}/${friend?.id}`
+                                        );
+                                    }}
+                                    className="send-msg"
+                                >
                                     <img src="/icons/chat.png" />
                                 </button>
                             </div>

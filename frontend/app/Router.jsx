@@ -34,7 +34,7 @@ const MyRoutes = [
         ]
     },
     {
-                path: "/chat-box",
+                path: "/chat-box/:user_name/:user_id",
                 element: <ChatBox />
             },
     

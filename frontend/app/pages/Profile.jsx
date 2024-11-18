@@ -478,7 +478,11 @@ const Profile = () => {
                             {getUser().id !== user._id &&
                                 isFriend(me, user?._id) && (
                                     <div className="action-area">
-                                        <button className="message">
+                                        <button
+                                        onClick={()=>{
+                                            navigate(`/chat-box/${user?.name}/${user?._id}`)
+                                        }}
+                                        className="message">
                                             Send Message
                                         </button>
                                         <button

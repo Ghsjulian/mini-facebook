@@ -11,11 +11,23 @@ const isFriend = async (req, res, next) => {
                 if (user && user._id) {
                     const receiver_id = req.params.receiver_id
                     const friends = user.friends;
+                    let result = friends.find(obj => obj.id === receiver_id);
+            if (result.id) {
+                if (result.id === receiver_id) {
+                    next()
+                } else {
+                    throw new Error("User Not Friend Yet")
+                }
+            } else {
+                throw new Error("You are not friends")
+            }
+                    /*
                     if(user.includes(receiver_id)){
                         next()
                     }else{
                         throw new Error("You're Not Friend Yet")
                     }
+                    */
                 }
             }
         }

@@ -397,108 +397,91 @@ aside .links a img {
     background: var(--chat-box);
 }
 /* Creating The Message Ui For Chat box */
-
-main .message {
+.chat--box {
+    padding: 1rem 0.2rem;
     position: relative;
-    padding: 0.7rem 1.2rem;
-    margin: 0.7rem 1rem;
-    max-width: 65%;
-    width: 65%;
-    overflow: hidden;
-    text-overflow: word-break;
+}
+
+.chat {
+    position: relative;
+    width: auto;
     display: inline-block;
-    justify-content: center;
     align-items: center;
-    text-align: center;
+    justify-content: center;
+    max-width: 50%;
+    margin: 0.5rem 0;
 }
-/*--> Styling New  CSS For Chat Bubles <--*/
-
-main .bubble {
-    border-radius: 1em;
-    padding: 0.5rem;
-    margin: 0.0625em;
-    max-width: 60%;
-}
-
-/*--> Styling New  CSS For Chat Bubles <--*/
-main .left {
+.chat.left {
+    clear: both;
     float: left;
-    clear: both;
-    border-radius: 50px 50px 50px 0;
 }
-main .right {
+.chat.right {
+    clear: both;
     float: right;
-    clear: both;
-    border-radius: 100px 100px 0 100px;
 }
-main .right img {
-    position: absolute;
-    right: 0;
-    bottom: 2px;
+.chat.left img {
     width: 25px;
     height: 25px;
     object-fit: cover;
-    border-radius: 50%;
-    border: 0.1px solid var(--logo);
-}
-main .left img {
+    padding: 2px;
     position: absolute;
-    left: 0px;
-    bottom: 2px;
-    width: 25px;
-    height: 25px;
-    object-fit: cover;
-    border-radius: 50%;
+    bottom: -5px;
+    left: 0;
     border: 0.1px solid var(--txt);
+    background: var(--txt);
+    border-radius: 50%;
+}
+.chat.right img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    padding: 2px;
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    border: 0.1px solid var(--logo);
+    background: var(--logo);
+    border-radius: 50%;
 }
 
-.left p {
+.chat.left p {
+    width: auto;
+    margin-left: 22px;
+    margin-top: 5px;
     background: var(--txt);
     color: var(--white);
-    font-weight: 900;
-    font-size: 14px;
-    padding: 0.5rem;
-    margin-left: 18px;
-    max-width: 360px;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 20px;
-    border-bottom-right-radius: 10px;
+    font-weight: 800;
+    padding: 0.5rem 1rem;
+    border-radius: 50px 50px 50px 0;
 }
-
-.left span {
-    position: absolute;
-    left: 2rem;
-    bottom: 5px;
-    font-size: 10px;
-    color: var(--txt);
-    font-weight: 500;
-    font-style: italic;
-}
-
-.right p {
+.chat.right p {
+    width: auto;
+    margin-right: 22px;
+    margin-top: 10px;
     background: var(--logo);
     color: var(--white);
-    font-weight: 900;
-    font-size: 14px;
-    padding: 0.5rem;
-    margin-right: 18px;
-    max-width: 360px;
-    text-align: right;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    font-weight: 800;
+    padding: 0.5rem 1rem;
+    border-radius: 50px 50px 0 50px;
 }
-
-.right span {
+.chat.left span {
     position: absolute;
-    right: 2rem;
-    bottom: 5px;
+    bottom: -3px;
+    left: 28px;
     font-size: 10px;
-    color: var(--logo);
-    font-weight: 500;
+    color: var(--txt);
+    font-weight: 800;
     font-style: italic;
 }
-
+.chat.right span {
+    position: absolute;
+    bottom: -3px;
+    right: 28px;
+    font-size: 10px;
+    color: var(--logo);
+    font-weight: 800;
+    font-style: italic;
+}
 /* STYLING MESSAGE */
 
 .app footer {
@@ -512,6 +495,26 @@ main .left img {
     z-index: 9000;
     border-radius: 0 0 10px 0;
 }
+footer .selected-img {
+    position: absolute;
+    left: 1px;
+    top: -5rem;
+    width: 100px;
+    height: 80px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+footer .close {
+    position: absolute;
+    left: 85px;
+    top: -5.4rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: contain;
+    z-index: 90000;
+}
+
 footer .box {
     width: 100%;
     display: flex;
