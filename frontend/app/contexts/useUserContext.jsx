@@ -79,6 +79,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
     const isLogin = state.isLogin;
+    const [messages,setMessages]=useState([])
 
     const login = userDetails => {
         dispatch({ type: LOGIN, payload: userDetails });
@@ -94,22 +95,9 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ state, login, logout, authUser, isLogin }}
+            value={{ state, login, logout, authUser, isLogin, messages ,setMessages}}
         >
             {children}
         </AuthContext.Provider>
     );
 };
-
-
-/*
-const UserContext = createContext();
-export const UserProvider = ({ children }) => {
-    
-    return <UserContext.Provider value={{}}>{children}</UserContext.Provider>;
-};
-
-export const useUser = () => {
-    return useContext(UserContext);
-};
-*/

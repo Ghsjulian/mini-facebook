@@ -5,7 +5,7 @@ const secretKey = process.env.SECRET_KEY;
 const expiresIn = process.env.EXPIRES_IN;
 const path = require("path");
 const fs = require("fs");
-const UserModel = require("../models/User.Model")
+const UserModel = require("../models/User.Model");
 
 const makeHash = async password => {
     try {
@@ -75,19 +75,39 @@ const DeleteOldImg = async filepath => {
     }
 };
 
-const getUser = async(id)=>{
+const getUser = async id => {
     try {
-      const user = await UserModel.findOne({_id:id})
-      if(user){
-          return user
-      } else {
-          throw new Error("No User Found")
-      }
+        const user = await UserModel.findOne({ _id: id });
+        if (user) {
+            return user;
+        } else {
+            throw new Error("No User Found");
+        }
     } catch (error) {
-         
-      console.log(error.message);
+        console.log(error.message);
     }
-}
+};
+const isFriend = async id => {
+    try {
+        const user = await UserModel.findOne({ _id: id });
+        if (user && user?._id) {
+            const friends = user.friends;
+            let result = friends.find(obj => obj?.id === id);
+            if (result?.id) {
+                if (result?.id === id) {
+                    return true;
+                } else {
+                    throw new Error("User Not Friend Yet");
+                }
+            } else {
+                throw new Error("You are not friends");
+            }
+        }
+    } catch (error) {
+        console.log("Error in isFriend in Utils.js --> ", error.message);
+        return false;
+    }
+};
 
 module.exports = {
     makeHash,
@@ -97,5 +117,6 @@ module.exports = {
     setCookie,
     DeleteFile,
     DeleteOldImg,
-    getUser
+    getUser,
+    isFriend
 };

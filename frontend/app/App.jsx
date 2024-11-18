@@ -8,15 +8,15 @@ import {
 } from "react-router-dom";
 import MyRoutes from "./Router";
 import { AuthProvider } from "./contexts/useUserContext";
+import { SocketContextProvider } from "./contexts/SocketContext";
 
 const router = createBrowserRouter(MyRoutes);
 const App = () => {
     return (
         <AuthProvider>
-            <RouterProvider
-                
-                router={router}
-            />
+             <SocketContextProvider>
+            <RouterProvider router={router} />
+            </SocketContextProvider>
         </AuthProvider>
     );
 };

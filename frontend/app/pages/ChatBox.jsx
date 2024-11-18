@@ -16,8 +16,9 @@ import { useAuth } from "../contexts/useUserContext";
 import { getUser, api } from "../auth/isLogin";
 
 const ChatBox = () => {
-    const { isLogin } = useAuth();
+    const { isLogin, messages, setMessages } = useAuth();
     const { user_id, user_name } = useParams();
+
     const [message, setMessage] = useState("");
     const [file, setFile] = useState(null);
     const [fileData, setfileData] = useState(null);
@@ -66,23 +67,51 @@ const ChatBox = () => {
                         "Content-Type": "application/json",
                         minifacebook: getUser().token || null
                     },
-                    body: JSON.stringify({ message:message })
+                    body: JSON.stringify({ message: message })
                 }
             );
             const response = await request.json();
+            AppendChat(message);
+            typeRef.current.focus();
+            message_box.current.scrollTop = message_box.current.scrollHeight;
+            setMessage("");
+            /*--> Socket Emit Will Be Here <--*/
+
+            /*--> Socket Emit Will Be Here <--*/
         } catch (error) {
             console.log(error);
         }
-        /*
-        AppendChat(message);
-        typeRef.current.focus();
-        message_box.current.scrollTop = message_box.current.scrollHeight;
-        setMessage("");
-        */
     };
 
     useEffect(() => {
+        const getConversations = async id => {
+            setLoading(true);
+            try {
+                const request = await fetch(
+                    `${api}/message/get-message/${id}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            minifacebook: getUser().token || null
+                        }
+                    }
+                );
+                const data = await request.json();
+                setMessages(data);
+            } catch (error) {
+                console.log(
+                    "Error While Fetching Conversation In Client Side --> ",
+                    error
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getConversations(user_id);
         document.title = "Chatting With - " + user_name;
+        if (loading) return;
     }, [user_id, user_name]);
 
     return (
@@ -92,16 +121,9 @@ const ChatBox = () => {
                     <Header />
                     <main ref={message_box} className="chat--box">
                         {/*--> Chat Will Be Display <--*/}
-                        <div className="chat right">
-                            <img src="/icons/girl.png" />
-                            <p>This is message</p>
-                            <span>12:12PM</span>
-                        </div>
-                        <div className="chat left">
-                            <img src="/icons/girl.png" />
-                            <p>This is message</p>
-                            <span>12:12PM</span>
-                        </div>
+                        {!loading && messages.length > 0 && (
+                            <Chats chats={messages} />
+                        )}
                         {/*--> Chat Will Be Display <--*/}
                     </main>
                     {/*--> Footer Typing <--*/}
@@ -131,6 +153,10 @@ const ChatBox = () => {
                             />
                             <input
                                 ref={typeRef}
+                                onFocus={e => {
+                                    message_box.current.scrollTop =
+                                        message_box.current.scrollHeight;
+                                }}
                                 onChange={e => {
                                     setMessage(e.target.value);
                                 }}

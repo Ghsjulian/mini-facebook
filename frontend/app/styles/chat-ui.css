@@ -719,6 +719,9 @@ aside .search-area {
         left: 0;
         margin: 0 0;
     }
+    .chat {
+        max-width: 90%;
+    }
 }
 
 /* Sidebar Animation Creted */

@@ -29,6 +29,8 @@ class MessageController {
                     const newMessage = new MessageModel({
                         sender_id,
                         receiver_id,
+                        sender_avatar :sender.avatar,
+                        receiver_avatar :receiver.avatar ,
                         message
                     });
                     if (newMessage) {

@@ -12,6 +12,9 @@ const messageSchema = new mongoose.Schema({
 			ref: "User",
 			required: true,
 		},
+		sender_avatar : String,
+		receiver_avatar : String,
+
 		message: {
 			type: String,
 			required: true,

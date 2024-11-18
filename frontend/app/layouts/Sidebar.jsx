@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-    NavLink,
-    
-    useLocation,
-    useNavigate
-} from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { api, getUser } from "../auth/isLogin";
+import { useSocketContext } from "../contexts/SocketContext";
 
 const Sidebar = ({ sidebar }) => {
+    const { socket, activeUsers } = useSocketContext();
     const [friends, setFriends] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -37,6 +34,8 @@ const Sidebar = ({ sidebar }) => {
         fetchAllFriends();
         if (isLoading) return;
     }, []);
+console.log(activeUsers);
+
 
     return (
         <>
