@@ -128,20 +128,30 @@ mini-facebook
 
 #### Screensots And Demo (Desktop Mode) :
 
-<img src="/demo/s1.png" width="350px" height="200px"/><br/><br/>
-<img src="/demo/s2.png" width="350px" height="200px"/><br/><br/>
-<img src="/demo/s3.png" width="350px" height="200px"/><br/><br/>
-<img src="/demo/s4.png" width="350px" height="200px"/><br/><br/>
-<img src="/demo/s5.png" width="350px" height="200px"/><br/><br/>
+<img src="/demo/deskk-1.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-2.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-3.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-4.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-5.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-6.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-7.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-8.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-9.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-10.jpg" width="365px" height="200px"/><br/><br/>
+<img src="/demo/desk-11.jpg" width="365px" height="200px"/><br/><br/>
 
 #### Screensots And Demo (Mobile Mode) :
 
-<img src="/demo/m1.png" width="350px" height="700px"/><br/><br/>
-<img src="/demo/m2.png" width="350px" height="700px"/><br/><br/>
-<img src="/demo/m3.png" width="350px" height="700px"/><br/><br/>
-<img src="/demo/m4.png" width="350px" height="700px"/><br/><br/>
-<img src="/demo/m5.png" width="350px" height="700px"/><br/><br/>
-<img src="/demo/m6.png" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-1.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-2.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-3.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-4.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-5.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-6.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-7.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-8.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-9.jpg" width="350px" height="700px"/><br/><br/>
+<img src="/demo/m-10.jpg" width="350px" height="700px"/><br/><br/>
 
 #### Thank You !
 
