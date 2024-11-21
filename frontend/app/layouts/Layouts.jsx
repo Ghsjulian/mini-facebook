@@ -13,7 +13,7 @@ import "../styles/vendor/remixicon/remixicon.css";
 import "../styles/chat-ui.css";
 import "../styles/home.css";
 import "../styles/fetching.css";
-import { useAuth } from "../contexts/useUserContext";
+import { useAuth } from "../contexts/useAuth";
 
 const Layouts = () => {
     const { isLogin } = useAuth();

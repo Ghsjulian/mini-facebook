@@ -7,7 +7,7 @@ import {
     Route
 } from "react-router-dom";
 import MyRoutes from "./Router";
-import { AuthProvider } from "./contexts/useUserContext";
+import { AuthProvider } from "./contexts/useAuth";
 import { SocketContextProvider } from "./contexts/SocketContext";
 import { MessageProvider } from "./contexts/MessageContext";
 

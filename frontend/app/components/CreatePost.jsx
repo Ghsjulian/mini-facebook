@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { getUser, api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 
 const CreatePost = () => {
+    const { getUser, api } = useAuth();
     const [postContent, setPostContent] = useState("");
     const [postImg, setPostImg] = useState(null);
     const [postImgData, setPostImgData] = useState(null);
@@ -72,7 +73,7 @@ const CreatePost = () => {
                 showMessage(false, response.message);
             }
         } catch (error) {
-            setLoading(false)
+            setLoading(false);
             console.log(
                 "Error In Post Creating Client Side --> ",
                 error.message

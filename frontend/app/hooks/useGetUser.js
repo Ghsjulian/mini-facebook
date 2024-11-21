@@ -1,7 +1,8 @@
-import { getUser,api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 import { useState, useEffect } from "react";
 
 const useGetUser = () => {
+        const { getUser, api } = useAuth()
     const [getting, setGetting] = useState(false);
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null); // Optional: To handle errors

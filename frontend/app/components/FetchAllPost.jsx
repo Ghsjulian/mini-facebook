@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { getUser, api } from "../auth/isLogin";
 import PostFetching from "../skeletons/PostFetching";
 import useLike from "../hooks/useLike";
 import useComment from "../hooks/useComment";
 import { getDate } from "../hooks/useDate";
 import FetchComments from "./FetchComments";
+import { useAuth } from "../contexts/useAuth";
+
+
 
 const FetchAllPost = ({ user }) => {
+    const { getUser, api } = useAuth()
     const { LikePost, isLiking } = useLike();
     const [comments, setComments] = useState([]);
     const [fetching, setFetching] = useState(false);

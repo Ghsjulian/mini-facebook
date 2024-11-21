@@ -2,9 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
-import { getUser, api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 
 const Signup = () => {
+        const { getUser, api } = useAuth()
     const { setCookie } = useCookie();
     const [userName, setuserName] = useState("");
     const [email, setemail] = useState("");

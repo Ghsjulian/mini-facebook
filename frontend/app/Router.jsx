@@ -8,10 +8,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import AddFriends from "./pages/AddFriends";
-import ChatBox from "./pages/ChatBox"
+import ChatBox from "./pages/ChatBox";
 // Import Auth Here...
 import { isLogin } from "./auth/isLogin";
-import IsLogged from "./auth/isLoggedIn";
+
 
 const MyRoutes = [
     {
@@ -29,15 +29,14 @@ const MyRoutes = [
             {
                 path: "/add-friend",
                 element: <AddFriends />
-            },
-            
+            }
         ]
     },
     {
-                path: "/chat-box/:user_name/:user_id",
-                element: <ChatBox />
-            },
-    
+        path: "/chat-box/:user_name/:user_id",
+        element: <ChatBox />
+    },
+
     {
         path: "/login",
         element: !isLogin() ? <Login /> : <Navigate to="/" />

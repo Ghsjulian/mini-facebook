@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { getUser, api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 import useFindFriend from "../hooks/useFindFriend";
 import useAddFriend from "../hooks/useAddFriend";
 import PeopleFetching from "../skeletons/PeopleFetching";
 
 const AddFriends = () => {
+    const { getUser, api } = useAuth()
     const { isFetching, peoples, FindPeoples } = useFindFriend();
     const { result, AddFriend } = useAddFriend();
     // Local state to track friend request status

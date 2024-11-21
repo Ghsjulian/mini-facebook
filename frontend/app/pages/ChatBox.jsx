@@ -12,12 +12,11 @@ import "../styles/chat-ui.css";
 import "../styles/home.css";
 import "../styles/fetching.css";
 // Imported Use Auth
-import { useAuth } from "../contexts/useUserContext";
+import { useAuth } from "../contexts/useAuth";
 import { useMessage } from "../contexts/MessageContext"; // Import the new context
-import { getUser, api } from "../auth/isLogin";
 
 const ChatBox = () => {
-    const { isLogin } = useAuth();
+        const {isLogin, getUser, api } = useAuth()
     const { messages, setMessages, addMessage } = useMessage(); // Use the message context
     const { user_id, user_name } = useParams();
 
@@ -60,7 +59,7 @@ const ChatBox = () => {
                 }
             );
             const response = await request.json();
-            addMessage(response); // Add the new message to the context
+            addMessage(response); 
             typeRef.current.focus();
             message_box.current.scrollTop = message_box.current.scrollHeight;
             setMessage("");

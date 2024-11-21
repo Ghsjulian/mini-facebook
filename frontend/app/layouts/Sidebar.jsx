@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { api, getUser } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 import { useSocketContext } from "../contexts/SocketContext";
 
 const Sidebar = ({ sidebar }) => {
+        const { getUser, api } = useAuth()
     const { socket, activeUsers } = useSocketContext();
     const [friends, setFriends] = useState([]);
     const [isLoading, setLoading] = useState(false);

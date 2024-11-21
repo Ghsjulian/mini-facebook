@@ -1,7 +1,8 @@
-import { getUser,api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 import { useState } from "react";
 
 const useFindFriend = () => {
+        const { getUser, api } = useAuth()
     const [isFetching, setFetching] = useState(false);
     const [peoples, setPeople] = useState([]);
 

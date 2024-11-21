@@ -9,7 +9,7 @@ import { Navigate } from "react-router-dom";
 import useCookie from "../hooks/useCookie";
 export const api = import.meta.env.VITE_API_URL;
 
-const getUser = () => {
+const getUserinfo = () => {
     const { getCookie } = useCookie();
     const cookie = getCookie("minifacebook") || null;
     if (cookie !== null) {
@@ -41,7 +41,7 @@ const isLogged = () => {
 // Initial state
 const initialState = {
     isLogin: isLogged() || false,
-    user: getUser() || null
+    user: getUserinfo() || null
 };
 // Action types
 const LOGIN = "LOGIN";
@@ -53,7 +53,7 @@ const authReducer = (state, action) => {
         case LOGIN:
             return {
                 ...state,
-                isLogin: isLogged(),
+                isLogin: true,
                 user: action.payload
             };
         case LOGOUT:
@@ -79,8 +79,9 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
     const isLogin = state.isLogin;
-    const [messages,setMessages]=useState([])
-
+    const api = import.meta.env.VITE_API_URL;
+    
+    
     const login = userDetails => {
         dispatch({ type: LOGIN, payload: userDetails });
     };
@@ -89,13 +90,13 @@ export const AuthProvider = ({ children }) => {
         dispatch({ type: LOGOUT });
     };
 
-    const authUser = () => {
+    const getUser = () => {
         return state.user;
     };
 
     return (
         <AuthContext.Provider
-            value={{ state, login, logout, authUser, isLogin, messages ,setMessages}}
+            value={{ state, login, logout, getUser,api, isLogin}}
         >
             {children}
         </AuthContext.Provider>

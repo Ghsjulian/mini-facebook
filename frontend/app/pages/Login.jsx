@@ -2,13 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/index.css";
 import useCookie from "../hooks/useCookie";
-import { isLogin, getUser, api } from "../auth/isLogin";
-import {useAuth} from "../contexts/useUserContext"
-
-
+import { useAuth } from "../contexts/useAuth";
 
 const Login = () => {
-    const {login} = useAuth()
+    const { getUser, login, api } = useAuth();
     const { setCookie } = useCookie();
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -66,9 +63,9 @@ const Login = () => {
                 txtRef.current.textContent = "Login Success";
                 showMessage(response.message, true);
                 loader.current.classList.remove("load");
-               login()
+                login(response.user);
                 navigate("/");
-                window.location.reload()
+               // window.location.reload();
             } else {
                 txtRef.current.textContent = "Login Now";
                 showMessage(response.message, false);
@@ -118,7 +115,6 @@ const Login = () => {
             SendToServer(email.trim(), password.trim());
         }
     };
-    
 
     return (
         <div className="full-container">

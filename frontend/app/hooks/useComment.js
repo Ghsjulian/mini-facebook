@@ -1,7 +1,8 @@
-import { getUser, api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 import { useState } from "react";
 
 const useComment = () => {
+        const { getUser, api } = useAuth()
     const [isComment, setComment] = useState(false);
     const commentPost = async (id,comment) => {
         try {

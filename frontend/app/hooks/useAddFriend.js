@@ -1,7 +1,8 @@
-import { getUser,api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 import { useState } from "react";
 
 const useAddFriend = () => {
+        const { getUser, api } = useAuth()
     const [adding, setAdding] = useState(false);
     const [result, setResult] = useState({});
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { getUser, api } from "../auth/isLogin";
+import { useAuth } from "../contexts/useAuth";
 
 const FetchComments = () => {
+    const  { getUser, api } = useAuth()
     const [comments, setComments] = useState([]);
     const [fetching, setFetching] = useState(false);
 

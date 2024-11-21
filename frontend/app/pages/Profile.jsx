@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, NavLink, Navigate } from "react-router-dom";
 import FetchAllPost from "../components/FetchAllPost";
 import CreatePost from "../components/CreatePost";
-import { getUser, api } from "../auth/isLogin";
 import useAddFriend from "../hooks/useAddFriend";
 import { getDate } from "../hooks/useDate";
-import { useAuth } from "../contexts/useUserContext";
+import { useAuth } from "../contexts/useAuth";
 
 const Profile = () => {
-    const { authUser } = useAuth();
+        const { getUser, api } = useAuth()
     const { adding, result, AddFriend } = useAddFriend();
     const { user_id, user_name } = useParams();
     const [getting, setGetting] = useState(false);
