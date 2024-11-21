@@ -20,9 +20,11 @@
 
 #### Developer Email : <a href="email:ghsjulian@outlook.com" target="_blank"> ghsjulian@outlook.com </a>
 
+#### Live Demo : <a href="https://mini-facebook-wrdw.onrender.com/" target="_blank">View Demo </a>
+
 #### Start Date : 25 Octeber 2024
 
-#### End Date : Still Working...
+#### End Date : 21 November 2024
 
 ---
 
