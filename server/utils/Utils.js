@@ -77,7 +77,7 @@ const DeleteOldImg = async filepath => {
 
 const getUser = async id => {
     try {
-        const user = await UserModel.findOne({ _id: id });
+        const user = await UserModel.findOne({ _id: id }).select("-password");
         if (user) {
             return user;
         } else {

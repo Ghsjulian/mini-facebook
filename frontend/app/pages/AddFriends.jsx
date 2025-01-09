@@ -6,7 +6,7 @@ import useAddFriend from "../hooks/useAddFriend";
 import PeopleFetching from "../skeletons/PeopleFetching";
 
 const AddFriends = () => {
-    const { getUser, api } = useAuth()
+    const { getUser, api } = useAuth();
     const { isFetching, peoples, FindPeoples } = useFindFriend();
     const { result, AddFriend } = useAddFriend();
     // Local state to track friend request status
@@ -51,20 +51,9 @@ const AddFriends = () => {
             return false;
         }
     };
-    const isRequestedMe = me => {
+    const isRequestedMe = id => {
         if (me.length > 0) {
-            let result = me.find(obj => obj.receiver_id === getUser().id);
-            if (result?.receiver_id) {
-                if (result?.receiver_id === getUser().id) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+            console.log(me);
         }
     };
 
@@ -143,136 +132,58 @@ const AddFriends = () => {
             {!isFetching &&
                 peoples &&
                 peoples.length > 0 &&
-                peoples.map(people => {
+                peoples.map((people, index) => {
                     const requestStatus = friendRequests[people._id];
                     return (
-                        <>{ !isFriend(me, people._id) &&
-                        <div key={people._id + "__123"} className="flex">
-                            <NavLink
-                                to={`/profile/${people.name}/${people._id}`}
-                            >
-                                <img
-                                    src={
-                                        people.avatar
-                                            ? people.avatar
-                                            : "/icons/man.png"
-                                    }
-                                    alt={people.name}
-                                />
-                                <span>{people.name}</span>
-                            </NavLink>
-
-                            {/*
-                            <button
-                                onClick={e => {
-                                    e.preventDefault();
-                                    handleAddFriend(people, people._id);
-                                }}
-                                id={people._id}
-                                className={
-                                    people.is_requested ? "show-cancel" : "add"
-                                }
-                            >
-                                {people.is_requested
-                                    ? "Cancel Request"
-                                    : "Add Friend"}
-                            </button>
-                            */}
-                            {!isRequestedMe(me) &&
-                                !people.is_requested &&
-                                !isFriend(me, people._id) && (
-                                    <button
-                                        onClick={e => {
-                                            e.preventDefault();
-                                            handleAddFriend(people, people._id);
-                                        }}
-                                        id={people._id}
-                                        className="add"
+                        <>
+                            {!isFriend(me, people._id) && (
+                                <div key={people._id+index+123} className="flex">
+                                    <NavLink
+                                        to={`/profile/${people.name}/${people._id}`}
                                     >
-                                        Add Friend
-                                    </button>
-                                )}
-                            {people.is_requested && (
-                                <button
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        handleAddFriend(people, people._id);
-                                    }}
-                                    id={people._id}
-                                    className="show-cancel"
-                                >
-                                    Cancel Request
-                                </button>
+                                        <img
+                                            src={
+                                                people.avatar
+                                                    ? people.avatar
+                                                    : "/icons/man.png"
+                                            }
+                                            alt={people.name}
+                                        />
+                                        <span>{people.name}</span>
+                                    </NavLink>
+                                    {!isFriend(me, people._id) && (
+                                        <button
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                handleAddFriend(
+                                                    people,
+                                                    people._id
+                                                );
+                                            }}
+                                            id={people._id}
+                                            className="add"
+                                        >
+                                            Add Friend
+                                        </button>
+                                    )}
+                                    {people.is_requested && (
+                                        <button
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                handleAddFriend(
+                                                    people,
+                                                    people._id
+                                                );
+                                            }}
+                                            id={people._id}
+                                            className="show-cancel"
+                                        >
+                                            Cancel Request
+                                        </button>
+                                    )}
+                                </div>
                             )}
-                            {isRequestedMe(me) && (
-                                <button
-                                    onClick={() => {
-                                        AcceptRequest(people._id);
-                                    }}
-                                    className="accept"
-                                >
-                                    Accept Request
-                                </button>
-                            )}
-                        </div>
-                  }</>  );
-                })}
-        </div>        
-    );
-};
-
-export default AddFriends;
-
-/*
-import React, { useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import { getUser } from "../auth/isLogin";
-import useFindFriend from "../hooks/useFindFriend";
-import useAddFriend from "../hooks/useAddFriend";
-import PeopleFetching from "../skeletons/PeopleFetching";
-
-const AddFriends = () => {
-    const { isFetching, peoples, FindPeoples } = useFindFriend();
-    const { adding, result, AddFriend } = useAddFriend();
-
-    useEffect(() => {
-        FindPeoples();
-        if (isFetching) return;
-    }, []);
-    return (
-        <div className="profile-section people">
-            <h3>Add New Friend</h3>
-            {isFetching && <PeopleFetching />}
-
-            {!isFetching &&
-                peoples !== null &&
-                peoples.length > 0 &&
-                peoples.map((people, index) => {
-                    return (
-                        <div key={people._id} className="flex">
-                            <NavLink
-                                to={`/profile/${people.name}/${people._id}`}
-                            >
-                                <img
-                                    src={
-                                        people.avtar
-                                            ? people.avtar
-                                            : "icons/man.png"
-                                    }
-                                />
-                                <span>{people.name}</span>
-                            </NavLink>
-                            <button
-                                onClick={e => {
-                                    e.preventDefault();
-                                    AddFriend(people._id);
-                                }}
-                                id={people._id}
-                                className={"add"}
-                            >
-                                Add Friend
-                            </button>
-                        </div>
+                        </>
                     );
                 })}
         </div>
@@ -280,4 +191,3 @@ const AddFriends = () => {
 };
 
 export default AddFriends;
-*/

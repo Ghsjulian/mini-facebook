@@ -7,7 +7,7 @@ const PeopleFetching = () => {
 return (<>{
     dummyArr.map((element, index) => {
         return (
-            <div className="fetching-people">
+            <div key={index+123} className="fetching-people">
                 <NavLink>
                     <div className="img"></div>
                     <div className="flex-column">

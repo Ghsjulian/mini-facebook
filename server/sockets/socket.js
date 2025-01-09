@@ -10,7 +10,7 @@ const users = {};
 
 const getSocketID = id => {
     if (users?.id) {
-        console.log("socket.js --> ",users[id]);
+        console.log("socket.js --> ", users[id]);
         return users[id].sock_id;
     }
     return;
@@ -28,6 +28,8 @@ IO.on("connection", async socket => {
     /*--> Create Handshake <--*/
     const user_id = socket.handshake.query.user_id;
     const user = await Utils.getUser(user_id);
+    console.log(`\n [+] ---> ${user.name} Has Connected\n`);
+
     if (user_id != "undefined") {
         users[user_id] = {
             sock_id: socket.id,
@@ -36,7 +38,10 @@ IO.on("connection", async socket => {
             user_avatar: user.avatar,
             user_friends: user.friends
         };
-        /*--> Extract Friends From Random Users <--*/
+    }
+    console.log(users);
+    /*--> Extract Friends From Random Users <--*/
+    /*
         let friends = [];
         Object.keys(users).forEach(u_id => {
             let result = user.friends.find(obj => obj?.id === u_id);
@@ -45,14 +50,15 @@ IO.on("connection", async socket => {
             }
         });
         IO.emit("active_users", friends);
-        //IO.to(users[user_id].sock_id).emit("active_users", friends);
-        /*
+        */
+    //IO.to(users[user_id].sock_id).emit("active_users", friends);
+    /*
     if (await Utils.isFriend(user_id)) {
         IO.to(users[user_id].sock_id).emit("active_users", users);
     }
     */
-    }
-    console.log(`\n [+] ---> ${user.name} Has Connected\n`);
+    // }
+
     /*--> For Disonnecting User <--*/
     socket.on("disconnect", async socket => {
         delete users[user_id];
@@ -61,4 +67,4 @@ IO.on("connection", async socket => {
 });
 
 // Export All
-module.exports = { app, server, IO,users, getSocketID };
+module.exports = { app, server, IO, users, getSocketID };

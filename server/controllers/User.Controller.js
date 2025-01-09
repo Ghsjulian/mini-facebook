@@ -803,9 +803,6 @@ class USerController {
                 throw new Error("No User Exist");
             }
         } catch (error) {
-            console.log(
-                "Error While Fetching All Friends In User.Controller->AllFriends"
-            );
             console.log(error.message);
             return res.json({
                 error: true,
