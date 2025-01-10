@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/useAuth";
 import { useSocketContext } from "../contexts/SocketContext";
 
 const Sidebar = ({ sidebar }) => {
-        const { getUser, api } = useAuth()
+    const { getUser, api } = useAuth();
     const { socket, activeUsers } = useSocketContext();
     const [friends, setFriends] = useState([]);
     const [isLoading, setLoading] = useState(false);
@@ -31,16 +31,17 @@ const Sidebar = ({ sidebar }) => {
             );
         }
     };
+
     useEffect(() => {
         fetchAllFriends();
-        if (isLoading) return;
+        if (isLoading) {
+            return;
+        }
     }, []);
-console.log(activeUsers);
-
 
     return (
         <>
-            <h3>Your Friends ({!isLoading && friends?.length})</h3>
+            <h3>Your Friends ({activeUsers?.length})</h3>
             <div className="search-area">
                 <input type="text" placeholder="Search..." />
                 <button>
@@ -48,18 +49,29 @@ console.log(activeUsers);
                 </button>
             </div>
             <div className="links">
-                {!isLoading &&
-                    friends?.length > 0 &&
-                    friends?.map((friend, index) => {
+                {activeUsers?.length > 0 &&
+                    activeUsers?.map((friend, index) => {
                         return (
                             <div key={friend?.id} className="flex-friend">
                                 <NavLink
                                     onClick={sidebar}
                                     to={`/profile/${friend.name}/${friend.id}`}
                                 >
-                                    <div className="active-circle">
+                                    <div
+                                        className={
+                                            friend.online
+                                                ? "active-circle"
+                                                : "offline-circle"
+                                        }
+                                    >
                                         <img src={friend?.avatar} />
-                                        <div className="active-user"></div>
+                                        <div
+                                            className={
+                                                friend.online
+                                                    ? "active-user"
+                                                    : "offline-user"
+                                            }
+                                        ></div>
                                     </div>
                                     <span>{friend?.name}</span>
                                 </NavLink>

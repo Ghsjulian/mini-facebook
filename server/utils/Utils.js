@@ -109,6 +109,21 @@ const isFriend = async id => {
     }
 };
 
+const getFriends = async id => {
+    try {
+        const user = await UserModel.findOne({ _id:id });
+        if (user) {
+            if (user.friends.length > 0) {
+                return user.friends;
+            } else {
+                throw new Error("No Friends Found ");
+            }
+        }
+    } catch (e) {
+        return []
+    }
+};
+
 module.exports = {
     makeHash,
     compareHashed,
@@ -118,5 +133,6 @@ module.exports = {
     DeleteFile,
     DeleteOldImg,
     getUser,
-    isFriend
+    isFriend,
+    getFriends
 };

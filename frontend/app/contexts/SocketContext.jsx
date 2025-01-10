@@ -17,8 +17,9 @@ export const SocketContextProvider = ({ children }) => {
                 }
             });
             setSocket(socket);
-            socket.on("active_users", users => {
+            socket.on("active-users", users => {
                 setActiveUsers(users);
+                console.log(users);
             });
 
             return () => socket.close();
@@ -28,7 +29,7 @@ export const SocketContextProvider = ({ children }) => {
                 setSocket(null);
             }
         }
-    }, []);
+    }, [getUser().id]);
 
     return (
         <SocketContext.Provider value={{ socket, activeUsers }}>
